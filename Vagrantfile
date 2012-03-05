@@ -14,17 +14,17 @@ Vagrant::Config.run do |config|
 
       vm_config.vm.box = "precise-desktop-i386"
      
-      vm_config.vm.network(:hostonly, ip_addr)
+#      vm_config.vm.network(:hostonly, ip_addr)
 
-      vm_config.vm.provision :chef_solo do |chef|
-            chef.cookbooks_path =  "cookbooks"
-            chef.add_recipe "master"
-            chef.add_recipe "hosts"
-            chef.json.merge!({ 
-                    :master => { :ubuntu_archive_url => ubuntu_archive_url }, 
-                    :hosts =>  { :hostname => host_name, :ip_addr => ip_addr }
-            })
-      end
+#      vm_config.vm.provision :chef_solo do |chef|
+#            chef.cookbooks_path =  "cookbooks"
+#            chef.add_recipe "master"
+#            chef.add_recipe "hosts"
+#            chef.json.merge!({ 
+#                    :master => { :ubuntu_archive_url => ubuntu_archive_url }, 
+#                    :hosts =>  { :hostname => host_name, :ip_addr => ip_addr }
+#            })
+#      end
 
   end
 

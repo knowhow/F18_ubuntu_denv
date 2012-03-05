@@ -58,24 +58,57 @@ directory "/home/vagrant/github" do
 end
 
 
-bash "git clone developer repositories" do
+bash "git clone build harbour developer repository" do
       user "vagrant"
       cwd "/home/vagrant/github"
       code <<-EOH
-git clone git://github.com/hernad/harbour.git
+
+if [ ! -f harbour ]; then
+   git clone git://github.com/hernad/harbour.git
+fi
+
 cd harbour
 source set_envars_ubuntu.sh
 cd harbour
 make install
 
+EOH
+
+end
+
+
+
+bash "git clone build F18 repository" do
+      user "vagrant"
+      cwd "/home/vagrant/github"
+
+      code <<-EOH
 REPOS=F18_knowhow
+
+if [ ! -f $REPOS ] ; then
 git clone git://github.com/knowhow/${REPOS}.git
+fi
 
-git clone git://github.com/knowhow/harbour_playground.git
-git clone git://github.com/knowhow/T0_knowhow.git
+cd $REPOS
+source scripts/ubuntu_set_envars.sh 
+./build.sh
 
+EOH
+
+end
+
+
+bash "git clone install F18 3rd party" do
+      user "vagrant"
+      cwd "/home/vagrant/github"
+
+      code <<-EOH
 REPOS=F18_ubuntu_3rd_party_install
-git clone git://github.com/knowhow/${REPOS}.git
+
+if [ ! -f $REPOS ] ; then
+  git clone git://github.com/knowhow/${REPOS}.git
+fi
+
 cd $REPOS
 ./F18_3rd_party_ubuntu_install.sh
 
