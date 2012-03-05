@@ -5,9 +5,10 @@ Vagrant::Config.run do |config|
 
   config.vm.define :f18_dev_1 do |vm_config|
 
-      ip_addr = "55.55.55.56"
-      host_name = "f18-dev-1.knowhow-erp.local"
-      ubuntu_archive_url = "http://archive.ubuntu.com/ubuntu/"
+      ip_addr = "55.55.55.100"
+      #host_name = "f18-dev-1.knowhow-erp.local"
+      host_name = "precise-desktop-i386"
+      ubuntu_archive_url = "http://archive.bring.out.ba/ubuntu/"
 
       vm_config.vm.customize ["modifyvm", :id, "--name",  host_name]
 

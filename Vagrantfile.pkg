@@ -1,0 +1,4 @@
+Vagrant::Config.run do |config|
+  config.vm.boot_mode = :gui
+  config.vm.network :hostonly, "55.55.55.100"
+end
