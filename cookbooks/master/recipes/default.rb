@@ -63,7 +63,7 @@ bash "git clone build harbour developer repository" do
       cwd "/home/vagrant/github"
       code <<-EOH
 
-if [ ! -f harbour ]; then
+if [ ! -d harbour ]; then
    git clone git://github.com/hernad/harbour.git
    cd harbour
    source set_envars_ubuntu.sh
@@ -96,7 +96,7 @@ bash "git clone build F18 repository" do
       code <<-EOH
 REPOS=F18_knowhow
 
-if [ ! -f $REPOS ] ; then
+if [ ! -d $REPOS ] ; then
 git clone git://github.com/knowhow/${REPOS}.git
 cd $REPOS
 source scripts/ubuntu_set_envars.sh 
@@ -116,7 +116,7 @@ bash "git clone install F18 3rd party" do
 
 REPOS=F18_ubuntu_3rd_party_install
 
-if [ ! -f $REPOS ] ; then
+if [ ! -d $REPOS ] ; then
   git clone git://github.com/knowhow/${REPOS}.git
 fi
 
