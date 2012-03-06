@@ -11,6 +11,9 @@ package "sqlite3" do
     action :install
 end
 
+package "bluez" do
+  action :purge
+end
 
 ["wine", "libqt4-dev", "pgadmin3", "postgresql-9.1", "libcurl4-openssl-dev", "libmysqlclient16-dev", "libpq-dev" ].each do |item|
 
@@ -20,7 +23,15 @@ end
 
 end
 
-  
+service "cups" do
+   action :stop
+end
+
+service "postgresql" do
+   action :stop
+end
+
+
 file "/etc/profile.d/F18_knowhowERP.sh" do
     content <<-CFILE
 #!/bin/bash
@@ -49,7 +60,6 @@ directory knowhowERP_root + "/util" do
   group "admin"
   mode  "0755"
 end
-
 
 directory "/home/vagrant/github" do
   owner "vagrant" 
