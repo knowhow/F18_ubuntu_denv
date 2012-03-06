@@ -70,7 +70,7 @@ bash "git clone build harbour developer repository" do
       cwd "/home/vagrant/github"
       code <<-EOH
 
-if [ ! -d harbour ]; then
+if [[ ! -d harbour ]]; then
    git clone git://github.com/hernad/harbour.git
    cd harbour
    source set_envars_ubuntu.sh
@@ -98,12 +98,13 @@ end
 
 bash "git clone build F18 repository" do
       user "vagrant"
+      user "vagrant"
       cwd "/home/vagrant/github"
 
       code <<-EOH
 REPOS=F18_knowhow
 
-if [ ! -d $REPOS ] ; then
+if [[ ! -d $REPOS ]] ; then
 git clone git://github.com/knowhow/${REPOS}.git
 cd $REPOS
 source scripts/ubuntu_set_envars.sh 
@@ -113,25 +114,43 @@ EOH
 
 end
 
+
+directory "/home/vagrant/.wine" do
+  owner "vagrant" 
+  group "admin"
+  mode  "0755"
+end
+
+directory "/home/vagrant/.wine/drive_c" do
+  owner "vagrant" 
+  group "admin"
+  mode  "0755"
+end
+
+
 bash "git clone install F18 3rd party" do
       user "vagrant"
+      group "vagrant"
       cwd "/home/vagrant/github"
-
       code <<-EOH
 
-/usr/local/bin/install-gecko.sh
+export HOME=/home/vagrant
 
+source /usr/local/bin/install-gecko.sh
 REPOS=F18_ubuntu_3rd_party_install
 
-if [ ! -d $REPOS ] ; then
+if [[ ! -d $REPOS ]] ; then
   git clone git://github.com/knowhow/${REPOS}.git
 fi
 
 cd $REPOS
-./F18_3rd_party_ubuntu_install.sh
+
+echo `date` > chef_run.log
+echo `pwd` >> chef_run.log
+
+source ./F18_3rd_party_ubuntu_install.sh &>> chef_run.log
 
 EOH
-
 end
 
 
@@ -146,7 +165,6 @@ bash "reboot if /opt/knowhowERP/bin not in path" do
 
       code <<-EOH
 IN_PATH=`echo $PATH | grep -c /opt/knowhowERP/bin`
-
 
 if [[ $IN_PATH -eq 0 ]] ; then
   shutdown -r now
