@@ -136,7 +136,7 @@ bash "git clone install F18 3rd party" do
 
 export HOME=/home/vagrant
 
-source /usr/local/bin/install-gecko.sh
+source /usr/local/bin/install-gecko.sh gecko-1.4
 REPOS=F18_ubuntu_3rd_party_install
 
 if [[ ! -d $REPOS ]] ; then
