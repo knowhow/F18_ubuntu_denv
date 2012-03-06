@@ -164,26 +164,4 @@ EOH
 end
 
 
-#remote_file "/tmp/couch.png" do source "http://couchdb.apache.org/img/sketch.png" action :nothing
-#end
-
-
-bash "reboot if /opt/knowhowERP/bin not in path" do
-      user "root"
-      #user "vagrant"
-      cwd "/home/vagrant/github"
-
-      code <<-EOH
-IN_PATH=`echo $PATH | grep -c /opt/knowhowERP/bin`
-
-if [[ $IN_PATH -eq 0 ]] ; then
-  shutdown -r now
-  #sudo shutdown -r now 2>/tmp/reboot.log
-#else
-  #echo $IN_PATH >/tmp/reboot.log
-fi
-
-EOH
-
-
 end
