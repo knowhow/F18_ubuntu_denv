@@ -58,6 +58,13 @@ directory "/home/vagrant/github" do
 end
 
 
+
+#git "/opt/mysources/couch" do
+#      repository "git://git.apache.org/couchdb.git"
+#      reference "master"
+#      action :sync
+#end
+
 bash "git clone build harbour developer repository" do
       user "vagrant"
       cwd "/home/vagrant/github"
@@ -133,7 +140,8 @@ end
 
 
 bash "reboot if /opt/knowhowERP/bin not in path" do
-      user "vagrant"
+      user "root"
+      #user "vagrant"
       cwd "/home/vagrant/github"
 
       code <<-EOH
@@ -141,12 +149,13 @@ IN_PATH=`echo $PATH | grep -c /opt/knowhowERP/bin`
 
 
 if [[ $IN_PATH -eq 0 ]] ; then
-  reboot
+  shutdown -r now
+  #sudo shutdown -r now 2>/tmp/reboot.log
+#else
+  #echo $IN_PATH >/tmp/reboot.log
 fi
 
 EOH
-
-
 
 
 end
