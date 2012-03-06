@@ -65,15 +65,26 @@ bash "git clone build harbour developer repository" do
 
 if [ ! -f harbour ]; then
    git clone git://github.com/hernad/harbour.git
+   cd harbour
+   source set_envars_ubuntu.sh
+   cd harbour
+   make install
+
 fi
-
-cd harbour
-source set_envars_ubuntu.sh
-cd harbour
-make install
-
 EOH
 
+end
+
+
+#remote_file "/usr/local/install-gecko.sh" do
+#      source "http://winezeug.googlecode.com/svn/trunk/install-gecko.sh"
+
+
+cookbook_file "/usr/local/bin/install-gecko.sh" do
+      mode 0755
+      source "install-gecko.sh"
+      owner "root"
+      group "root"
 end
 
 
@@ -87,22 +98,22 @@ REPOS=F18_knowhow
 
 if [ ! -f $REPOS ] ; then
 git clone git://github.com/knowhow/${REPOS}.git
-fi
-
 cd $REPOS
 source scripts/ubuntu_set_envars.sh 
 ./build.sh
-
+fi
 EOH
 
 end
-
 
 bash "git clone install F18 3rd party" do
       user "vagrant"
       cwd "/home/vagrant/github"
 
       code <<-EOH
+
+/usr/local/bin/install-gecko.sh
+
 REPOS=F18_ubuntu_3rd_party_install
 
 if [ ! -f $REPOS ] ; then
@@ -113,5 +124,29 @@ cd $REPOS
 ./F18_3rd_party_ubuntu_install.sh
 
 EOH
+
+end
+
+
+#remote_file "/tmp/couch.png" do source "http://couchdb.apache.org/img/sketch.png" action :nothing
+#end
+
+
+bash "reboot if /opt/knowhowERP/bin not in path" do
+      user "vagrant"
+      cwd "/home/vagrant/github"
+
+      code <<-EOH
+IN_PATH=`echo $PATH | grep -c /opt/knowhowERP/bin`
+
+
+if [[ $IN_PATH -eq 0 ]] ; then
+  reboot
+fi
+
+EOH
+
+
+
 
 end
