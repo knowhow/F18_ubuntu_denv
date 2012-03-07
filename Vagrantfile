@@ -10,6 +10,7 @@ Vagrant::Config.run do |config|
       #host_name = "precise-desktop-i386"
       ubuntu_archive_url = "http://archive.bring.out.ba/ubuntu/"
 
+      vm_config.vm.customize ["modifyvm", :id, "--memory",  1024]
       vm_config.vm.customize ["modifyvm", :id, "--name",  host_name]
 
       vm_config.vm.box = "precise-desktop-i386"
