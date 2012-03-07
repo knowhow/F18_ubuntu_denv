@@ -11,7 +11,7 @@ package "sqlite3" do
     action :install
 end
 
-["bluez", "apport"].each do |item|
+["bluez", "apport", "update-notifier", "oneconf", "telepathy-indicator" ].each do |item|
     package item do
        action :purge
     end
