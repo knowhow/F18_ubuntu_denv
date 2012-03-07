@@ -11,6 +11,7 @@ package "sqlite3" do
     action :install
 end
 
+log "---- ukloni nepotrebne pakete ---"
 ["bluez", "apport", "update-notifier", "oneconf", "telepathy-indicator" ].each do |item|
     package item do
        action :purge
