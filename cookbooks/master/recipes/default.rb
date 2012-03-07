@@ -107,10 +107,6 @@ EOH
 end
 
 
-#remote_file "/usr/local/install-gecko.sh" do
-#      source "http://winezeug.googlecode.com/svn/trunk/install-gecko.sh"
-
-
 cookbook_file "/usr/local/bin/install-gecko.sh" do
       mode 0755
       source "install-gecko.sh"
@@ -152,6 +148,16 @@ directory "/home/vagrant/.wine/drive_c" do
 end
 
 
+bash "install wine-gecko" do
+      user "vagrant"
+      group "vagrant"
+      cwd "/home/vagrant/github"
+      code <<-EOH
+
+/usr/local/bin/install-gecko.sh
+EOH
+end
+
 bash "git clone install F18 3rd party" do
       user "vagrant"
       group "vagrant"
@@ -160,7 +166,6 @@ bash "git clone install F18 3rd party" do
 
 export HOME=/home/vagrant
 
-source /usr/local/bin/install-gecko.sh
 REPOS=F18_ubuntu_3rd_party_install
 
 if [[ ! -d $REPOS ]] ; then
@@ -169,13 +174,7 @@ fi
 
 cd $REPOS
 
-#echo `date` > chef_run.log
-#echo `pwd` >> chef_run.log
-
 source ./F18_3rd_party_ubuntu_install.sh
-#&>> chef_run.log
 
 EOH
 end
-
-
