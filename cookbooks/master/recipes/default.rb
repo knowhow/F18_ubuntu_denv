@@ -11,11 +11,25 @@ package "sqlite3" do
     action :install
 end
 
-package "bluez" do
-  action :purge
+["bluez", "apport"].each do |item|
+    package item do
+       action :purge
+    end
 end
 
-["wine", "libqt4-dev", "pgadmin3", "postgresql-9.1", "libcurl4-openssl-dev", "libmysqlclient16-dev", "libpq-dev" ].each do |item|
+log "----- F18 dev packages ----"
+
+
+["libqt4-dev", "pgadmin3", "postgresql-9.1", "libcurl4-openssl-dev", "libmysqlclient16-dev", "libpq-dev" ].each do |item|
+
+   package item do
+      action :install
+   end
+
+end
+
+log "----- F18 runtime packages ----"
+["wine", "winetricks", "vim-gtk"].each do |item|
 
    package item do
       action :install
@@ -146,7 +160,7 @@ bash "git clone install F18 3rd party" do
 
 export HOME=/home/vagrant
 
-source /usr/local/bin/install-gecko.sh gecko-1.4
+source /usr/local/bin/install-gecko.sh
 REPOS=F18_ubuntu_3rd_party_install
 
 if [[ ! -d $REPOS ]] ; then
@@ -155,13 +169,13 @@ fi
 
 cd $REPOS
 
-echo `date` > chef_run.log
-echo `pwd` >> chef_run.log
+#echo `date` > chef_run.log
+#echo `pwd` >> chef_run.log
 
-source ./F18_3rd_party_ubuntu_install.sh &>> chef_run.log
+source ./F18_3rd_party_ubuntu_install.sh
+#&>> chef_run.log
 
 EOH
 end
 
 
-end
