@@ -57,8 +57,8 @@ install_gecko()
 
 # Install gecko for stable wine and the current dev branch
 myarch=x86
-#install_gecko gecko-1.4
-install_gecko gecko-1.3
+install_gecko gecko-1.4
+#install_gecko gecko-1.3
 #install_gecko wine-1.2
 #install_gecko wine-1.3.3
 #install_gecko gecko-1.2
