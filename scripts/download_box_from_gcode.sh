@@ -38,7 +38,7 @@ sha1_sum
 
 if [[  $SH1SUM_OK == "1" ]]
 then
-   brisem $FILE_NAME download-ovane dijelove ... vise mi ne trebaju.
+   echo brisem $FILE_NAME download-ovane dijelove ... vise mi ne trebaju.
    rm $FILE_NAME.part_a[a-h]
 fi
 
