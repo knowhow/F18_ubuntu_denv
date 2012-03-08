@@ -1,27 +1,27 @@
 #!/bin/bash
 
 FILE_NAME=precise-desktop-i386.box
-
+FILE_SIZE=925013504
 URL=http://knowhow-erp.googlecode.com/files
 
-md5_sum() 
+sha1_sum() 
 {
-echo "provjeravam $FILE_NAME md5 sumu" 
+echo "provjeravam $FILE_NAME sha1 sume"
 
-RET=`md5sum $FILE_NAME`
+RET=`sha1sum -c scripts/parts.sha1`
 
-if [[ "$RET" ==  "97202c5fdbfcb1ad543c8decbec36994  $FILE_NAME" ]]
+if [[ $? -eq 0 ]]
 then
- echo "md5 sum ok, brisem dijelove a-h" 
- rm $FILE_NAME.part_a[a-h] 2> /dev/null
- MD5_OK=1
+ echo "sha1 sum ok"
+ SH1SUM_OK=1
 else
- echo "md5 sum ne valja, brisem box fajl !" 
- rm $FILE_NAME 2> /dev/null
- MD5_OK=0
+ echo "sha1 sum ne valja, brisem $FILE_NAME !"
+ rm $FILE_NAME
+ SH1SUM_OK=0
 fi
 
 }
+
 
 download_merge_parts()
 {
@@ -34,17 +34,29 @@ done
 
 cat $FILE_NAME.part_a[a-h] > $FILE_NAME
 
-md5_sum
-}
+sha1_sum
 
-MD5_OK=0
-
-if [[ -f $FILE_NAME ]]
-then 
- md5_sum
+if [[  $SH1SUM_OK == "1" ]]
+then
+   brisem $FILE_NAME download-ovane dijelove ... vise mi ne trebaju.
+   rm $FILE_NAME.part_a[a-h]
 fi
 
-if [[ Md5_OK -eq 0 ]]
+}
+
+
+
+SIZE_OK=`ls -l $FILE_NAME | grep -c $FILE_SIZE`
+
+if [[ "$SIZE_OK" != "1" ]]
+then
+  echo $FILE_NAME velicina nije dobra $FILE_SIZE  
+  echo brisem ga ...
+  rm $FILE_NAME
+fi
+
+if [[ ! -f $FILE_NAME ]]
 then
    download_merge_parts  
 fi 
+
