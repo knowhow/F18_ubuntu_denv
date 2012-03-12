@@ -42,6 +42,17 @@ service "cups" do
    action :stop
 end
 
+
+service "postgresql" do
+   action :start
+end
+
+script "postgres password admin" do
+    user "postgres"
+    interpreter "sh"
+    code "echo \"ALTER USER postgres WITH PASSWORD \'admin\'\" | psql"
+end
+
 service "postgresql" do
    action :stop
 end
