@@ -116,10 +116,34 @@ cookbook_file "/usr/local/bin/install-gecko.sh" do
 end
 
 
+HOME="/home/vagrant"
+
+directory HOME + "/.config" do
+  owner "vagrant" 
+  group "vagrant"
+  mode  "0755"
+end
+
+
+cookbook_file  HOME + "/.config/gnome-terminal.desktop" do
+      owner "vagrant"
+      group "vagrant"
+      mode 0755
+      source "gnome-terminal.desktop"
+      source "gnome-terminal.dekstop"
+      notifies :run, "execute[gnome_logout]"
+end
+
+execute "gnome_logout" do
+  user  "vagrant"
+  command "gnome-session-quit --force --logout"
+  action :nothing
+end
+
 
 bash "git clone build F18 repository" do
       user "vagrant"
-      user "vagrant"
+      group "vagrant"
       cwd "/home/vagrant/github"
 
       code <<-EOH
