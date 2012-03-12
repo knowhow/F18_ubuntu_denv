@@ -118,25 +118,24 @@ end
 
 HOME="/home/vagrant"
 
-directory HOME + "/.config" do
+directory HOME + "/.config/autostart" do
   owner "vagrant" 
   group "vagrant"
   mode  "0755"
 end
 
 
-cookbook_file  HOME + "/.config/gnome-terminal.desktop" do
+cookbook_file  HOME + "/.config/autostart/gnome-terminal.desktop" do
       owner "vagrant"
       group "vagrant"
       mode 0755
       source "gnome-terminal.desktop"
-      source "gnome-terminal.dekstop"
       notifies :run, "execute[gnome_logout]"
 end
 
 execute "gnome_logout" do
   user  "vagrant"
-  command "gnome-session-quit --force --logout"
+  command "export DISPLAY=:0 ; gnome-session-quit --force --logout"
   action :nothing
 end
 
