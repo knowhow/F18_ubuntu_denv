@@ -7,6 +7,14 @@ apt_repo "main_ubuntu" do
       source_packages false
 end
 
+
+script "apt-get update" do
+    user "root"
+    interpreter "sh"
+    code "apt-get update"
+end
+
+
 package "sqlite3" do
     action :install
 end
@@ -98,13 +106,16 @@ HOME="/home/vagrant"
 GIT_ROOT = HOME + "/github"
 
 git GIT_ROOT + "/harbour" do
+      user "vagrant"
+      group "vagrant"
+
       repository "git://github.com/hernad/harbour.git"
       reference "master"
       action :sync
 end
 
 
-bash "git clone build harbour developer repository" do
+bash "build harbour compiler, librarires" do
       user "vagrant"
       cwd GIT_ROOT + "/harbour"
       code <<-EOH
@@ -126,6 +137,9 @@ cookbook_file "/usr/local/bin/install-gecko.sh" do
 end
 
 git GIT_ROOT + "/F18_knowhow" do
+      user "vagrant"
+      group "vagrant"
+
       repository "git://github.com/knowhow/F18_knowhow.git"
       reference "master"
       action :sync
@@ -198,6 +212,8 @@ end
 REPOS = "F18_ubuntu_3rd_party_install"
 
 git GIT_ROOT + "/" + REPOS do
+      user "vagrant"
+      group "vagrant"
       repository "git://github.com/knowhow/" + REPOS
       reference "master"
       action :sync
@@ -265,7 +281,7 @@ git GIT_ROOT + "/" + REPOS do
       action :sync
 end
 
-log "build xtuple .... mozete komotno pristaviti kahvu "
+log "build xtuple library-ja i paketa .... mozete komotno pristaviti kahvu ..."
 
 
 ["openrpt", "csvimp", "xtuple", "updater"].each do |item|
