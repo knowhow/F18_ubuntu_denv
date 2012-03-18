@@ -42,6 +42,17 @@ service "cups" do
    action :stop
 end
 
+
+service "postgresql" do
+   action :start
+end
+
+script "postgres password admin" do
+    user "postgres"
+    interpreter "sh"
+    code "echo \"ALTER USER postgres WITH PASSWORD \'admin\'\" | psql"
+end
+
 service "postgresql" do
    action :stop
 end
@@ -120,10 +131,33 @@ git GIT_ROOT + "/F18_knowhow" do
       action :sync
 end
 
+HOME="/home/vagrant"
+
+directory HOME + "/.config/autostart" do
+  owner "vagrant" 
+  group "vagrant"
+  mode  "0755"
+end
+
+
+cookbook_file  HOME + "/.config/autostart/gnome-terminal.desktop" do
+      owner "vagrant"
+      group "vagrant"
+      mode 0755
+      source "gnome-terminal.desktop"
+      notifies :run, "execute[gnome_logout]"
+end
+
+execute "gnome_logout" do
+  user  "vagrant"
+  command "export DISPLAY=:0 ; gnome-session-quit --force --logout"
+  action :nothing
+end
+
 
 bash "build F18 repository" do
       user "vagrant"
-      user "vagrant"
+      group "vagrant"
       cwd "/home/vagrant/github"
 
       code <<-EOH

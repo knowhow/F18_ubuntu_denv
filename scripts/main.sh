@@ -64,6 +64,11 @@ if [[ "$BOX_INSTALLED" != "1" ]]; then
   exit 1
 fi
 
+
+echo "VirtualBOX - GUI/SuuppressMessages"
+
+VBoxManage setextradata global "GUI/SuppressMessages" "remindAboutAutoCapture,remindAboutMouseIntegrationOn,showRuntimeError.warning.HostAudioNotResponding,remindAboutGoingSeamless,remindAboutInputCapture,remindAboutGoingFullscreen,remindAboutMouseIntegrationOff,confirmGoingSeamless,confirmInputCapture,remindAboutPausedVMInput,confirmVMReset,confirmGoingFullscreen,remindAboutWrongColorDepth"
+
 echo "pokrecem instalaciju F18-dev sesije"
 vagrant up
 
