@@ -83,26 +83,25 @@ directory "/home/vagrant/github" do
 end
 
 
+HOME="/home/vagrant"
+GIT_ROOT = HOME + "/github"
 
-#git "/opt/mysources/couch" do
-#      repository "git://git.apache.org/couchdb.git"
-#      reference "master"
-#      action :sync
-#end
+git GIT_ROOT + "/harbour" do
+      repository "git://github.com/hernad/harbour.git"
+      reference "master"
+      action :sync
+end
+
 
 bash "git clone build harbour developer repository" do
       user "vagrant"
-      cwd "/home/vagrant/github"
+      cwd GIT_ROOT + "/harbour"
       code <<-EOH
 
-if [[ ! -d harbour ]]; then
-   git clone git://github.com/hernad/harbour.git
-   cd harbour
-   source set_envars_ubuntu.sh
+   source ./set_envars_ubuntu.sh
    cd harbour
    make install
 
-fi
 EOH
 
 end
@@ -115,9 +114,14 @@ cookbook_file "/usr/local/bin/install-gecko.sh" do
       group "root"
 end
 
+git GIT_ROOT + "/F18_knowhow" do
+      repository "git://github.com/knowhow/F18_knowhow.git"
+      reference "master"
+      action :sync
+end
 
 
-bash "git clone build F18 repository" do
+bash "build F18 repository" do
       user "vagrant"
       user "vagrant"
       cwd "/home/vagrant/github"
@@ -125,12 +129,10 @@ bash "git clone build F18 repository" do
       code <<-EOH
 REPOS=F18_knowhow
 
-if [[ ! -d $REPOS ]] ; then
-git clone git://github.com/knowhow/${REPOS}.git
 cd $REPOS
 source scripts/ubuntu_set_envars.sh 
 ./build.sh
-fi
+
 EOH
 
 end
@@ -159,7 +161,17 @@ bash "install wine-gecko" do
 EOH
 end
 
-bash "git clone install F18 3rd party" do
+REPOS = "F18_ubuntu_3rd_party_install"
+
+git GIT_ROOT + "/" + REPOS do
+      repository "git://github.com/knowhow/" + REPOS
+      reference "master"
+      action :sync
+end
+
+
+
+bash "install F18 3rd party" do
       user "vagrant"
       group "vagrant"
       cwd "/home/vagrant/github"
@@ -168,10 +180,6 @@ bash "git clone install F18 3rd party" do
 export HOME=/home/vagrant
 
 REPOS=F18_ubuntu_3rd_party_install
-
-if [[ ! -d $REPOS ]] ; then
-  git clone git://github.com/knowhow/${REPOS}.git
-fi
 
 cd $REPOS
 
