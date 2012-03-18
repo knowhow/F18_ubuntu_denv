@@ -7,6 +7,8 @@ Vagrant::Config.run do |config|
 
       ip_addr = "55.55.55.100"
       host_name = "f18-dev-1.knowhow-erp.local"
+      build_xtuple = true
+
       #host_name = "precise-desktop-i386"
       ubuntu_archive_url = "http://archive.bring.out.ba/ubuntu/"
 
@@ -22,7 +24,7 @@ Vagrant::Config.run do |config|
             chef.add_recipe "master"
             chef.add_recipe "hosts"
             chef.json.merge!({ 
-                    :master => { :ubuntu_archive_url => ubuntu_archive_url }, 
+                    :master => { :ubuntu_archive_url => ubuntu_archive_url, :build_xtuple => build_xtuple }, 
                     :hosts =>  { :hostname => host_name, :ip_addr => ip_addr }
             })
       end

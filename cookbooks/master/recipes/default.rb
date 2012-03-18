@@ -187,3 +187,74 @@ source ./F18_3rd_party_ubuntu_install.sh
 
 EOH
 end
+
+if node[:master][:build_xtuple]
+
+log "GIT clone xtuple repositories -------"
+
+REPOS = "openrpt"
+git GIT_ROOT + "/" + REPOS do
+      user "vagrant"
+      group "vagrant"
+      repository "git://github.com/knowhow/" + REPOS
+      reference "master"
+      action :sync
+end
+
+
+REPOS = "csvimp"
+git GIT_ROOT + "/" + REPOS do
+      user "vagrant"
+      group "vagrant"
+      repository "git://github.com/knowhow/" + REPOS
+      reference "master"
+      action :sync
+end
+
+
+REPOS = "xtuple"
+git GIT_ROOT + "/" + REPOS do
+      user "vagrant"
+      group "vagrant"
+      repository "git://github.com/knowhow/" + REPOS
+      reference "knowhow"
+      action :sync
+end
+
+
+REPOS = "updater"
+git GIT_ROOT + "/" + REPOS do
+      user "vagrant"
+      group "vagrant"
+      repository "git://github.com/knowhow/" + REPOS
+      reference "master"
+      action :sync
+end
+
+log "build xtuple .... mozete komotno pristaviti kahvu "
+
+
+["openrpt", "csvimp", "xtuple", "updater"].each do |item|
+
+bash "build & install xtuple " + item do
+      user "vagrant"
+      group "vagrant"
+      cwd "/home/vagrant/github"
+      code <<-EOH
+
+export HOME=/home/vagrant
+
+REPOS=#{item}
+cd $REPOS
+qmake
+make
+make install
+
+EOH
+end
+
+end
+
+
+end
+
