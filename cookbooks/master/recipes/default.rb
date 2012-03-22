@@ -129,12 +129,12 @@ EOH
 end
 
 
-cookbook_file "/usr/local/bin/install-gecko.sh" do
-      mode 0755
-      source "install-gecko.sh"
-      owner "root"
-      group "root"
-end
+#cookbook_file "/usr/local/bin/install-gecko.sh" do
+#      mode 0755
+#      source "install-gecko.sh"
+#      owner "root"
+#      group "root"
+#end
 
 git GIT_ROOT + "/F18_knowhow" do
       user "vagrant"
@@ -199,15 +199,15 @@ directory "/home/vagrant/.wine/drive_c" do
 end
 
 
-bash "install wine-gecko" do
-      user "vagrant"
-      group "vagrant"
-      cwd "/home/vagrant/github"
-      code <<-EOH
-
-/usr/local/bin/install-gecko.sh
-EOH
-end
+#bash "install wine-gecko" do
+#      user "vagrant"
+#      group "vagrant"
+#      cwd "/home/vagrant/github"
+#      code <<-EOH
+#
+#/usr/local/bin/install-gecko.sh
+#EOH
+#end
 
 REPOS = "F18_ubuntu_3rd_party_install"
 
