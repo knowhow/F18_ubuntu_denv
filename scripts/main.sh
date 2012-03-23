@@ -49,7 +49,7 @@ if [[ "$VAGRANT" != "1" ]]; then
   exit 1
 fi
 
-. scripts/download_box_from_gcode.sh $BOX_NAME 
+scripts/download_box_from_gcode.sh $BOX_NAME 
 
 
 FILE_NAME=$BOX_NAME.box
@@ -57,7 +57,7 @@ FILE_NAME=$BOX_NAME.box
 if [[ -f $FILE_NAME ]]; then
 
   echo instaliram vagrant box $FILE_NAME 
-  . scripts/switch_box_desktop-precise-i386.sh
+  . scripts/switch_box.sh $BOX_NAME
 
 fi
 
