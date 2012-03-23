@@ -9,6 +9,8 @@ Vagrant::Config.run do |config|
       host_name = "f18-dev-1.knowhow-erp.local"
       build_xtuple = true
 
+      variant= "unity"
+
       #host_name = "precise-desktop-i386"
       ubuntu_archive_url = "http://archive.bring.out.ba/ubuntu/"
 
@@ -24,7 +26,7 @@ Vagrant::Config.run do |config|
             chef.add_recipe "master"
             chef.add_recipe "hosts"
             chef.json.merge!({ 
-                    :master => { :ubuntu_archive_url => ubuntu_archive_url, :build_xtuple => build_xtuple }, 
+                    :master => { :variant => variant, :ubuntu_archive_url => ubuntu_archive_url, :build_xtuple => build_xtuple }, 
                     :hosts =>  { :hostname => host_name, :ip_addr => ip_addr }
             })
       end
@@ -36,6 +38,7 @@ Vagrant::Config.run do |config|
       ip_addr = "55.55.55.101"
       host_name = "f18-dev-2.knowhow-erp.local"
       build_xtuple = false
+      variant = "lxde"
 
       ubuntu_archive_url = "http://archive.bring.out.ba/ubuntu/"
 
@@ -51,7 +54,7 @@ Vagrant::Config.run do |config|
             chef.add_recipe "master"
             chef.add_recipe "hosts"
             chef.json.merge!({ 
-                    :master => { :ubuntu_archive_url => ubuntu_archive_url, :build_xtuple => build_xtuple }, 
+                    :master => { :variant => variant, :ubuntu_archive_url => ubuntu_archive_url, :build_xtuple => build_xtuple }, 
                     :hosts =>  { :hostname => host_name, :ip_addr => ip_addr }
             })
       end

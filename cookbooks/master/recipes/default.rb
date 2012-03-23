@@ -1,3 +1,5 @@
+variant = node[:master][:variant]
+
 apt_repo "main_ubuntu" do
       url node[:master][:ubuntu_archive_url]
       keyserver "keyserver.ubuntu.com"
@@ -26,9 +28,16 @@ log "---- ukloni nepotrebne pakete ---"
     end
 end
 
+if variant == "lxde"
+
+	package "xscreensaver" do
+	   action :purge
+	end
+
+end
+
+
 log "----- F18 dev packages ----"
-
-
 ["libqt4-dev", "pgadmin3", "postgresql-9.1", "libcurl4-openssl-dev", "libmysqlclient16-dev", "libpq-dev" ].each do |item|
 
    package item do
@@ -38,7 +47,7 @@ log "----- F18 dev packages ----"
 end
 
 log "----- F18 runtime packages ----"
-["wine", "winetricks", "vim-gtk"].each do |item|
+[ "cups-pdf", "wine", "winetricks", "vim-gtk"].each do |item|
 
    package item do
       action :install
@@ -79,25 +88,25 @@ end
 knowhowERP_root = "/opt/knowhowERP"
 directory knowhowERP_root do
   owner "vagrant" 
-  group "admin"
+  group "vagrant"
   mode  "0755"
 end
 
 directory knowhowERP_root + "/bin" do
   owner "vagrant" 
-  group "admin"
+  group "vagrant"
   mode  "0755"
 end
 
 directory knowhowERP_root + "/util" do
   owner "vagrant" 
-  group "admin"
+  group "vagrant"
   mode  "0755"
 end
 
 directory "/home/vagrant/github" do
   owner "vagrant" 
-  group "admin"
+  group "vagrant"
   mode  "0755"
 end
 
@@ -129,13 +138,6 @@ EOH
 end
 
 
-#cookbook_file "/usr/local/bin/install-gecko.sh" do
-#      mode 0755
-#      source "install-gecko.sh"
-#      owner "root"
-#      group "root"
-#end
-
 git GIT_ROOT + "/F18_knowhow" do
       user "vagrant"
       group "vagrant"
@@ -147,27 +149,32 @@ end
 
 HOME="/home/vagrant"
 
-directory HOME + "/.config/autostart" do
-  owner "vagrant" 
-  group "vagrant"
-  mode  "0755"
+
+if variant == "unity"
+
+	directory HOME + "/.config/autostart" do
+	  owner "vagrant" 
+	  group "vagrant"
+	  mode  "0755"
+	end
+
+
+	cookbook_file  HOME + "/.config/autostart/gnome-terminal.desktop" do
+	      owner "vagrant"
+	      group "vagrant"
+	      mode 0755
+	      source "gnome-terminal.desktop"
+	      notifies :run, "execute[gnome_logout]"
+	end
+
+
+	execute "gnome_logout" do
+	  user  "vagrant"
+	  command "export DISPLAY=:0 ; gnome-session-quit --force --logout"
+	  action :nothing
+	end
+
 end
-
-
-cookbook_file  HOME + "/.config/autostart/gnome-terminal.desktop" do
-      owner "vagrant"
-      group "vagrant"
-      mode 0755
-      source "gnome-terminal.desktop"
-      notifies :run, "execute[gnome_logout]"
-end
-
-execute "gnome_logout" do
-  user  "vagrant"
-  command "export DISPLAY=:0 ; gnome-session-quit --force --logout"
-  action :nothing
-end
-
 
 bash "build F18 repository" do
       user "vagrant"
@@ -188,26 +195,16 @@ end
 
 directory "/home/vagrant/.wine" do
   owner "vagrant" 
-  group "admin"
+  group "vagrant"
   mode  "0755"
 end
 
 directory "/home/vagrant/.wine/drive_c" do
   owner "vagrant" 
-  group "admin"
+  group "vagrant"
   mode  "0755"
 end
 
-
-#bash "install wine-gecko" do
-#      user "vagrant"
-#      group "vagrant"
-#      cwd "/home/vagrant/github"
-#      code <<-EOH
-#
-#/usr/local/bin/install-gecko.sh
-#EOH
-#end
 
 REPOS = "F18_ubuntu_3rd_party_install"
 
