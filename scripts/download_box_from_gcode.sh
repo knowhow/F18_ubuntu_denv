@@ -1,14 +1,32 @@
 #!/bin/bash
 
-FILE_NAME=precise-desktop-i386.box
-FILE_SIZE=925013504
+BOX_NAME=$1
+FILE_NAME=$BOX_NAME.box
+
+case "$BOX_NAME" in
+   
+precise-desktop-i386)
+   FILE_SIZE=925013504
+   PART_NAMES=aa ab ac ad ae af ag ah
+   ;;
+
+precise-desktop-lxde)
+   FILE_SIZE=425013504
+   PART_NAMES=aa ab ac ad
+
+*)  exit 1
+    ;;
+
+esac
+
+
 URL=http://knowhow-erp.googlecode.com/files
 
 sha1_sum() 
 {
 echo "provjeravam $FILE_NAME sha1 sume"
 
-RET=`sha1sum -c scripts/parts.sha1`
+RET=`sha1sum -c scripts/${BOX_NAME}_parts.sha1`
 
 if [[ $? -eq 0 ]]
 then
@@ -26,7 +44,7 @@ fi
 download_merge_parts()
 {
 
-for item in aa ab ac ad ae af ag ah
+for item in $PART_NAMES
 do
     echo wget $URL/$FILE_NAME.part_$item
     wget --continue  $URL/$FILE_NAME.part_$item

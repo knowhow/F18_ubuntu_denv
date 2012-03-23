@@ -1,12 +1,16 @@
 #!/bin/bash
 
-BOX_NAME=precise-desktop-i386
+BOX_NAME=$1
+
+if [[ "$BOX_NAME" == "" ]] ; then
+   BOX_NAME=precise-desktop-i386
+fi
 
 clear
 
 echo "ova skripta ucitava sa gcode vagrant box $BOX_NAME, ako ga nemate u tekucem direktoriju"
 echo "nakon toga, taj box instalira"
-echo "na kraju pokrece instalaciju F18 ubuntu developerskog okruženja, pri čemu je $BOX_NAME tempalte"
+echo "na kraju pokrece instalaciju F18 ubuntu developerskog okruženja, pri čemu je $BOX_NAME template"
 echo "instalacija se vrši prema receptima (cookbooks) definisani u Vagrantfile-u"
 echo " "
 echo "download sa gcode-a traje 45-60 min "
@@ -45,7 +49,7 @@ if [[ "$VAGRANT" != "1" ]]; then
   exit 1
 fi
 
-. scripts/download_box_from_gcode.sh  
+. scripts/download_box_from_gcode.sh $BOX_NAME 
 
 
 FILE_NAME=$BOX_NAME.box
