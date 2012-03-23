@@ -22,7 +22,7 @@ precise-desktop-i386)
    ;;
 
 precise-desktop-lxde)
-   FILE_SIZE=425013504
+   FILE_SIZE=502779904
    PART_NAMES="aa ab ac ad"
    PARTS_RANGE=a-d
    ;;
@@ -74,7 +74,7 @@ sha1_sum
 if [[  "$SH1SUM_OK" == "1" ]]
 then
    echo brisem $FILE_NAME download-ovane dijelove ... vise mi ne trebaju.
-   rm $FILE_NAME.part_a[a-h]
+   rm $FILE_NAME.part_a[$PARTS_RANGE]
 fi
 
 }
