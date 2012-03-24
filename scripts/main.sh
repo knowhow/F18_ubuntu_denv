@@ -1,15 +1,14 @@
 #!/bin/bash
-
-BOX_NAME=$1
-
-if [[ "$BOX_NAME" == "" ]] ; then
-   BOX_NAME=precise-desktop-i386
-fi
-
 clear
 
-echo "ova skripta ucitava sa gcode vagrant box $BOX_NAME, ako ga nemate u tekucem direktoriju"
-echo "nakon toga, taj box instalira"
+BOXES="precise-desktop-i386 precise-desktop-lxde"
+
+echo "ova skripta ucitava sa gcode vagrant box-ove:"
+echo " "
+echo $BOXES
+echo "-----------------------------------------------------------------"
+echo " "
+echo "ako ih nemate u tekucem direktoriju. Nakon toga, box-ovi se instaliraju"
 echo "na kraju pokrece instalaciju F18 ubuntu developerskog okruženja, pri čemu je $BOX_NAME template"
 echo "instalacija se vrši prema receptima (cookbooks) definisani u Vagrantfile-u"
 echo " "
@@ -27,7 +26,7 @@ echo " "
 echo "Ostale napomene:"
 echo "- ako imate mašinu sa malo RAM-a, spustite u Vagranfile-u količinu memorije za sesiju - sada je predviđeno 1024 MB."
 echo " "
-echo "pretisni bilo koju thipku za pokretanje ovog procesa ... good lak ..." 
+echo "pritisni bilo koju tipku za nastavak ... good luck ..." 
 echo " "
 read
 
@@ -49,9 +48,15 @@ if [[ "$VAGRANT" != "1" ]]; then
   exit 1
 fi
 
+
+
+
+
+for item in $BOXES
+do
+
+BOX_NAME=$item
 scripts/download_box_from_gcode.sh $BOX_NAME 
-
-
 FILE_NAME=$BOX_NAME.box
 
 if [[ -f $FILE_NAME ]]; then
@@ -60,6 +65,8 @@ if [[ -f $FILE_NAME ]]; then
   . scripts/switch_box.sh $BOX_NAME
 
 fi
+
+done
 
 BOX_INSTALLED=`vagrant box list | grep -c $BOX_NAME`
 

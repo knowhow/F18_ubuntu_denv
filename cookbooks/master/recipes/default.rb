@@ -1,5 +1,13 @@
 variant = node[:master][:variant]
 
+build_harbour = node[:master][:build_harbour]
+build_f18 = node[:master][:build_f18]
+build_xtuple = node[:master][:build_xtuple]
+
+HOME="/home/vagrant"
+GIT_ROOT = HOME + "/github"
+
+
 apt_repo "main_ubuntu" do
       url node[:master][:ubuntu_archive_url]
       keyserver "keyserver.ubuntu.com"
@@ -111,8 +119,41 @@ directory "/home/vagrant/github" do
 end
 
 
-HOME="/home/vagrant"
-GIT_ROOT = HOME + "/github"
+REPOS = "F18_ubuntu_3rd_party_install"
+
+git GIT_ROOT + "/" + REPOS do
+      user "vagrant"
+      group "vagrant"
+      repository "git://github.com/knowhow/" + REPOS
+      reference "master"
+      action :sync
+end
+
+
+switch = ''
+if not build_harbour
+  switch = '--hbout'
+end
+
+bash "install F18 3rd party" do
+      user "vagrant"
+      group "vagrant"
+      cwd "/home/vagrant/github"
+      code <<-EOH
+
+export HOME=/home/vagrant
+
+REPOS=F18_ubuntu_3rd_party_install
+
+cd $REPOS
+
+./F18_3rd_party_ubuntu_install.sh #{switch}
+
+EOH
+end
+
+
+
 
 git GIT_ROOT + "/harbour" do
       user "vagrant"
@@ -123,6 +164,8 @@ git GIT_ROOT + "/harbour" do
       action :sync
 end
 
+
+if build_harbour
 
 bash "build harbour compiler, librarires" do
       user "vagrant"
@@ -137,6 +180,7 @@ EOH
 
 end
 
+end
 
 git GIT_ROOT + "/F18_knowhow" do
       user "vagrant"
@@ -176,7 +220,10 @@ if variant == "unity"
 
 end
 
-bash "build F18 repository" do
+
+if build_f18
+
+bash "build " do
       user "vagrant"
       group "vagrant"
       cwd "/home/vagrant/github"
@@ -192,6 +239,7 @@ EOH
 
 end
 
+end
 
 directory "/home/vagrant/.wine" do
   owner "vagrant" 
@@ -206,36 +254,7 @@ directory "/home/vagrant/.wine/drive_c" do
 end
 
 
-REPOS = "F18_ubuntu_3rd_party_install"
-
-git GIT_ROOT + "/" + REPOS do
-      user "vagrant"
-      group "vagrant"
-      repository "git://github.com/knowhow/" + REPOS
-      reference "master"
-      action :sync
-end
-
-
-
-bash "install F18 3rd party" do
-      user "vagrant"
-      group "vagrant"
-      cwd "/home/vagrant/github"
-      code <<-EOH
-
-export HOME=/home/vagrant
-
-REPOS=F18_ubuntu_3rd_party_install
-
-cd $REPOS
-
-source ./F18_3rd_party_ubuntu_install.sh
-
-EOH
-end
-
-if node[:master][:build_xtuple]
+if build_xtuple
 
 log "GIT clone xtuple repositories -------"
 
