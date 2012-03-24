@@ -66,4 +66,33 @@ Vagrant::Config.run do |config|
   end
 
 
+  config.vm.define :f18_dev_3 do |vm_config|
+
+      ip_addr = "55.55.55.102"
+      host_name = "f18-dev-3.knowhow-erp.local"
+      build_fmk = true
+
+      ubuntu_archive_url = "http://archive.bring.out.ba/ubuntu/"
+
+      vm_config.vm.customize ["modifyvm", :id, "--memory",  512]
+      vm_config.vm.customize ["modifyvm", :id, "--name",  host_name]
+
+      vm_config.vm.box = "precise-desktop-lxde"
+     
+      vm_config.vm.network(:hostonly, ip_addr)
+
+      vm_config.vm.provision :chef_solo do |chef|
+            chef.cookbooks_path =  "cookbooks"
+            chef.add_recipe "master"
+            chef.add_recipe "hosts"
+            chef.json.merge!({ 
+                    :fmk => { :ubuntu_archive_url => ubuntu_archive_url,  :build_fmk => build_fmk }, 
+                    :hosts =>  { :hostname => host_name, :ip_addr => ip_addr }
+            })
+      end
+
+  end
+
+
+
 end
