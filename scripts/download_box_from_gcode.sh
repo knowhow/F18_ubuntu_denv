@@ -22,7 +22,7 @@ precise-desktop-i386)
    ;;
 
 precise-desktop-lxde)
-   FILE_SIZE=502779904
+   FILE_SIZE=492920320
    PART_NAMES="aa ab ac ad"
    PARTS_RANGE=a-d
    ;;

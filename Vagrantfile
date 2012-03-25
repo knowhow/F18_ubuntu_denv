@@ -26,8 +26,8 @@ Vagrant::Config.run do |config|
       vm_config.vm.provision :chef_solo do |chef|
             chef.cookbooks_path =  "cookbooks"
             chef.add_recipe "F18_3rd"
-            chef.add_recipe "master"
-            chef.add_recipe "hosts"
+            #chef.add_recipe "master"
+            #chef.add_recipe "hosts"
             chef.json.merge!({
                     :F18_3rd => { :install_harbour => (not build_harbour) }, 
                     :master => { :variant => variant, :ubuntu_archive_url => ubuntu_archive_url, :build_xtuple => build_xtuple, :build_harbour => build_harbour, :build_f18 => build_f18 }, 
@@ -58,7 +58,7 @@ Vagrant::Config.run do |config|
       vm_config.vm.provision :chef_solo do |chef|
             chef.cookbooks_path =  "cookbooks"
             chef.add_recipe "F18_3rd"
-            chef.add_recipe "master"
+            #chef.add_recipe "master"
             chef.add_recipe "hosts"
             chef.json.merge!({ 
                    :F18_3rd => { :install_harbour => (not build_harbour) }, 
