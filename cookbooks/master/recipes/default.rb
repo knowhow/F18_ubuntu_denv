@@ -118,45 +118,6 @@ directory "/home/vagrant/github" do
 end
 
 
-REPOS = "F18_ubuntu_3rd_party_install"
-
-git GIT_ROOT + "/" + REPOS do
-      user "vagrant"
-      group "vagrant"
-      repository "git://github.com/knowhow/" + REPOS
-      reference "master"
-      action :sync
-end
-
-
-switch = ''
-
-# ako ne buildas, onda instaliraj harbour sa gcode
-
-if not build_harbour
-  switch = '--hbout'
-end
-
-bash "install F18 3rd party" do
-      user "vagrant"
-      group "vagrant"
-      cwd "/home/vagrant/github"
-      code <<-EOH
-
-export HOME=/home/vagrant
-
-REPOS=F18_ubuntu_3rd_party_install
-
-cd $REPOS
-
-./F18_3rd_party_ubuntu_install.sh #{switch}
-
-EOH
-end
-
-
-
-
 git GIT_ROOT + "/harbour" do
       user "vagrant"
       group "vagrant"

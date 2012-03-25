@@ -25,9 +25,11 @@ Vagrant::Config.run do |config|
 
       vm_config.vm.provision :chef_solo do |chef|
             chef.cookbooks_path =  "cookbooks"
+            chef.add_recipe "F18_3rd"
             chef.add_recipe "master"
             chef.add_recipe "hosts"
-            chef.json.merge!({ 
+            chef.json.merge!({
+                    :F18_3rd => { :install_harbour => (not build_harbour) }, 
                     :master => { :variant => variant, :ubuntu_archive_url => ubuntu_archive_url, :build_xtuple => build_xtuple, :build_harbour => build_harbour, :build_f18 => build_f18 }, 
                     :hosts =>  { :hostname => host_name, :ip_addr => ip_addr }
             })
@@ -55,11 +57,13 @@ Vagrant::Config.run do |config|
 
       vm_config.vm.provision :chef_solo do |chef|
             chef.cookbooks_path =  "cookbooks"
+            chef.add_recipe "F18_3rd"
             chef.add_recipe "master"
             chef.add_recipe "hosts"
             chef.json.merge!({ 
-                    :master => { :variant => variant, :ubuntu_archive_url => ubuntu_archive_url, :build_xtuple => build_xtuple, :build_harbour => build_harbour, :build_f18 => build_f18 }, 
-                    :hosts =>  { :hostname => host_name, :ip_addr => ip_addr }
+                   :F18_3rd => { :install_harbour => (not build_harbour) }, 
+                   :master => { :variant => variant, :ubuntu_archive_url => ubuntu_archive_url, :build_xtuple => build_xtuple, :build_harbour => build_harbour, :build_f18 => build_f18 }, 
+                   :hosts =>  { :hostname => host_name, :ip_addr => ip_addr }
             })
       end
 
