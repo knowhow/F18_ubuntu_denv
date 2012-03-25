@@ -14,4 +14,7 @@ rm $BOX.box.part_*
 echo split -b $SIZE  $BOX.box .part_
 split -b $SIZE  $BOX.box $BOX.box.part_
 
-ls -l -h $BOX.box.part_* 
+ls -l -h $BOX.box.part_*
+
+echo " "
+sha1sum $BOX.box.part_*
