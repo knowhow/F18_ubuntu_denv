@@ -85,10 +85,9 @@ end
 
 file "/etc/profile.d/F18_knowhowERP.sh" do
     content <<-CFILE
-#!/bin/bash
 export KNOWHOW_ERP_ROOT=/opt/knowhowERP
-export HARBOUR_ROOT=$KNOWHOW_ERP_ROOT/hbout
-PATH=$KNOWHOW_ERP_ROOT/bin:$KNOWHOW_ERP_ROOT/util:$HARBOUR_ROOT/bin:$PATH
+export HARBOUR_ROOT=/opt/knowhowERP/hbout
+PATH=$KNOWHOW_ERP_ROOT/bin:$KNOWHOW_ERP_ROOT/util:$KNOWHOW_ERP_ROOT/lib;$HARBOUR_ROOT/bin:$PATH
 CFILE
     mode "0755"
 end
@@ -131,6 +130,9 @@ end
 
 
 switch = ''
+
+# ako ne buildas, onda instaliraj harbour sa gcode
+
 if not build_harbour
   switch = '--hbout'
 end
@@ -147,7 +149,7 @@ REPOS=F18_ubuntu_3rd_party_install
 
 cd $REPOS
 
-./F18_3rd_party_ubuntu_install.sh #{switch}
+sudo ./F18_3rd_party_ubuntu_install.sh #{switch}
 
 EOH
 end
