@@ -74,11 +74,11 @@ Vagrant::Config.run do |config|
 
       ip_addr = "55.55.55.102"
       host_name = "fmk-dev-1.knowhow-erp.local"
-      build_fmk = false
+      build_fmk = true
 
       ubuntu_archive_url = "http://archive.bring.out.ba/ubuntu/"
 
-      vm_config.vm.customize ["modifyvm", :id, "--memory",  512]
+      vm_config.vm.customize ["modifyvm", :id, "--memory",  768]
       vm_config.vm.customize ["modifyvm", :id, "--name",  host_name]
 
       vm_config.vm.box = "precise-desktop-lxde"

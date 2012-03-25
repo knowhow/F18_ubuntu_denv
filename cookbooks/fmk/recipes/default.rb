@@ -89,11 +89,36 @@ directory "/home/vagrant/github/fmk_lib/exe" do
   mode  "0755"
 end
 
+log "kreiraj potrebne direktorije, ln -s itd ..."
+
+bash "ln github => c:/git, mkdir fmk_lib/lib, exe "   do
+      user "vagrant"
+      cwd HOME
+      code <<-EOH
+
+   export HOME=#{HOME}
+   ln -s $HOME/github $HOME/.dosemu/drive_c/git
+ 
+   #echo problem nasih slova
+   ln -s $HOME/github/fmk_common $HOME/github/fmk_c
+
+   # fmk libs ovdje
+   DIRS="$HOME/github/fmk_lib/lib $HOME/github/fmk_lib/exe"
+   for dir in $DIRS
+   do
+      if [[ ! -d $dir ]]; then  
+              mkdir $dir
+      fi
+   done 
+EOH
+
+end
+
 
 
 if build_fmk
 
-[ "fmk_lib", "fmk_common", "fin", "fakt"].each do |item| 
+[ "fmk_lib", "fmk_c", "fin", "fakt"].each do |item| 
     
 bash "build fmk: " + item   do
       user "vagrant"

@@ -24,7 +24,7 @@ echo
 echo "Stoga, pristavite kahvu, odmorite se i pustite mašinu da radi svoj posao ..."
 echo " "
 echo "Ostale napomene:"
-echo "- ako imate mašinu sa malo RAM-a, spustite u Vagranfile-u količinu memorije za sesiju - sada je predviđeno 1024 MB."
+echo "- ako imate mašinu sa malo RAM-a, spustite u Vagranfile-u količinu memorije za sesije"
 echo " "
 echo "pritisni bilo koju tipku za nastavak ... good luck ..." 
 echo " "
@@ -47,9 +47,6 @@ if [[ "$VAGRANT" != "1" ]]; then
   echo "ruby gem vagrant mora biti instaliram"
   exit 1
 fi
-
-
-
 
 
 for item in $BOXES
