@@ -149,7 +149,7 @@ REPOS=F18_ubuntu_3rd_party_install
 
 cd $REPOS
 
-sudo ./F18_3rd_party_ubuntu_install.sh #{switch}
+./F18_3rd_party_ubuntu_install.sh #{switch}
 
 EOH
 end
