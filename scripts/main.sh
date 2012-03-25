@@ -83,13 +83,13 @@ VBoxManage setextradata global "GUI/SuppressMessages" "remindAboutAutoCapture,re
 echo "pokrecem instalaciju F18-dev sesije"
 vagrant up
 
-if [[ ! $? -eq  0 ]] ; then
-   echo "vagrant nije zavrsio posao do kraja .... ovo se zna cesto desiti pri instalaciji ubuntu paketa  ... "
-   echo "interesantno, desava se na razlicitim paketima"
-   echo "... kako god, vagrant provision nastavlja tamo gdje je prednodna operacija stala :)"
-   echo " "
-   echo "vagrant provision, na tebe je red !"
-   vagrant provision
-fi
+#if [[ ! $? -eq  0 ]] ; then
+#   echo "vagrant nije zavrsio posao do kraja .... ovo se zna cesto desiti pri instalaciji ubuntu paketa  ... "
+#   echo "interesantno, desava se na razlicitim paketima"
+#   echo "... kako god, vagrant provision nastavlja tamo gdje je prednodna operacija stala :)"
+#   echo " "
+#   echo "vagrant provision, na tebe je red !"
+#   vagrant provision
+#fi
 
 
