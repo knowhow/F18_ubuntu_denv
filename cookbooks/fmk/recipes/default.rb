@@ -62,7 +62,7 @@ GIT_ROOT="/home/vagrant/github"
 GIT_URL_ROOT="git://github.com/bringout-fmk"
     
     
-[ "fmk_lib", "fmk_common", "fin", "fakt"].each do |item| 
+[ "fmk_lib", "fmk_common", "fin", "kalk", "fakt", "pos", "os", "ld", "virm", "kam"].each do |item| 
     
 git GIT_ROOT + "/" + item do
       user "vagrant"
@@ -118,7 +118,7 @@ end
 
 if build_fmk
 
-[ "fmk_lib", "fmk_c", "fin", "fakt"].each do |item| 
+[ "fmk_lib", "fmk_c", "fin", "kalk", "fakt", "pos" ].each do |item| 
     
 bash "build fmk: " + item   do
       user "vagrant"
