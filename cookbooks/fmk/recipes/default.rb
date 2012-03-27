@@ -63,11 +63,22 @@ directory "/home/vagrant/.dosemu" do
   mode  "0755"
 end
 
-directory "/home/vagrant/.dosemu" do
+directory "/home/vagrant/.dosemu/drive_c" do
   owner "vagrant" 
   group "vagrant"
   mode  "0755"
 end
+
+
+
+
+log "ako ne možete pristupiti samba file serveru zvijer-2.bring.out.ba, onda trebate ručno instalirati"
+log "fmk_dsemu_drive_c.7z"
+log "detalji na ticketu http://redmine.bring.out.ba/issues/27228"
+log "ovaj 7z možete skinuti sa bring.out redmine-a: http://redmine.bring.out.ba/attachments/8182/fmk_dosemu_drive_c.7z"
+log "pa ga ručno instalirati unutar sesije na lokaciju ~/.dosemu"
+log " "
+log "ako se nalazite u officesa bring.out onda će ovaj posao vagrant/chef uraditi za vas ..."
 
 bash "instaliraj sa zvijer-2 bringout/fmk "   do
       user "vagrant"
@@ -76,23 +87,44 @@ bash "instaliraj sa zvijer-2 bringout/fmk "   do
 
    export HOME=#{HOME}
 
-   cd $HOME/.dosemurc
+   cd $HOME/.dosemu
 
+   echo `date` > fmk_dosemu.log
    ARCHIVE=fmk_dosemu_drive_c.7z
 
    if [[ ! -f $ARCHIVE ]]; then
+      echo "get from samba share fmk_dosemu_drive_c.7z" >> fmk_dosemu.log
       sudo smbclient //zvijer-2.bring.out.ba/shared -D bringout/FMK -c "get fmk_dosemu_drive_c.7z"
+   else
+      echo "$ARCHIVE vec postoji" >> fmk_dosemu.log
    fi
 
    if [[ ! -d drive_c/Clipper ]]; then
       7z x -y $ARCHIVE
+   else
+      echo ".dosemu/drive_c/Clipper vec postoji" >> fmk_dosemu.log
    fi
 
 EOH
 
 end
 
-ash
+
+cookbook_file  HOME + "/.dosemu/drive_c/autoexec.bat"  do
+	owner "vagrant"
+	group "vagrant"
+	mode 0755
+	source "autoexec.bat"
+end
+
+
+cookbook_file  HOME + "/.dosemu/drive_c/config.sys"  do
+	owner "vagrant"
+	group "vagrant"
+	mode 0755
+	source "autoexec.bat"
+end
+
 
 GIT_ROOT="/home/vagrant/github"
 GIT_URL_ROOT="git://github.com/bringout-fmk"
