@@ -122,7 +122,7 @@ cookbook_file  HOME + "/.dosemu/drive_c/config.sys"  do
 	owner "vagrant"
 	group "vagrant"
 	mode 0755
-	source "autoexec.bat"
+	source "config.sys"
 end
 
 
