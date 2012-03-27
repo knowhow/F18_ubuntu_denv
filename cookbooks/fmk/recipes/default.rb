@@ -61,7 +61,7 @@ end
 cookbook_file  "/etc/profile.d/90_dosemu.conf"  do
 	owner "root"
 	group "root"
-	mode 0700
+	mode 0644
 	source ".dosemurc"
 end
 
