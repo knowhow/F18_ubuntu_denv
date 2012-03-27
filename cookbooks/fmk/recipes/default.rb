@@ -33,7 +33,7 @@ log "---- ukloni nepotrebne pakete ---"
 end
 
 log "----- FMK runtime packages ----"
-[ "dosemu", "cups-pdf", "wine", "winetricks", "vim-gtk"].each do |item|
+[ "p7zip-full", "smbclient", "dosemu", "cups-pdf", "wine", "winetricks", "vim-gtk"].each do |item|
    package item do
       action :install
    end
@@ -57,6 +57,42 @@ cookbook_file  HOME + "/.dosemurc"  do
 	source ".dosemurc"
 end
 
+directory "/home/vagrant/.dosemu" do
+  owner "vagrant" 
+  group "vagrant"
+  mode  "0755"
+end
+
+directory "/home/vagrant/.dosemu" do
+  owner "vagrant" 
+  group "vagrant"
+  mode  "0755"
+end
+
+bash "instaliraj sa zvijer-2 bringout/fmk "   do
+      user "vagrant"
+      cwd HOME
+      code <<-EOH
+
+   export HOME=#{HOME}
+
+   cd $HOME/.dosemurc
+
+   ARCHIVE=fmk_dosemu_drive_c.7z
+
+   if [[ ! -f $ARCHIVE ]]; then
+      sudo smbclient //zvijer-2.bring.out.ba/shared -D bringout/FMK -c "get fmk_dosemu_drive_c.7z"
+   fi
+
+   if [[ ! -d drive_c/Clipper ]]; then
+      7z x -y $ARCHIVE
+   fi
+
+EOH
+
+end
+
+ash
 
 GIT_ROOT="/home/vagrant/github"
 GIT_URL_ROOT="git://github.com/bringout-fmk"

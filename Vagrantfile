@@ -9,11 +9,10 @@ Vagrant::Config.run do |config|
       host_name = "f18-dev-1.knowhow-erp.local"
 
       variant= "unity"
-      build_xtuple = true
       build_harbour = true
       build_f18 = true
+      build_xtuple = false
  
-      #host_name = "precise-desktop-i386"
       ubuntu_archive_url = "http://archive.bring.out.ba/ubuntu/"
 
       vm_config.vm.customize ["modifyvm", :id, "--memory",  1024]
@@ -25,9 +24,9 @@ Vagrant::Config.run do |config|
 
       vm_config.vm.provision :chef_solo do |chef|
             chef.cookbooks_path =  "cookbooks"
+            chef.add_recipe "master"
             chef.add_recipe "F18_3rd"
-            #chef.add_recipe "master"
-            #chef.add_recipe "hosts"
+            chef.add_recipe "hosts"
             chef.json.merge!({
                     :F18_3rd => { :install_harbour => (not build_harbour) }, 
                     :master => { :variant => variant, :ubuntu_archive_url => ubuntu_archive_url, :build_xtuple => build_xtuple, :build_harbour => build_harbour, :build_f18 => build_f18 }, 
@@ -74,7 +73,7 @@ Vagrant::Config.run do |config|
 
       ip_addr = "55.55.55.102"
       host_name = "fmk-dev-1.knowhow-erp.local"
-      build_fmk = true
+      build_fmk = false
 
       ubuntu_archive_url = "http://archive.bring.out.ba/ubuntu/"
 
