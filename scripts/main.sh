@@ -93,8 +93,17 @@ echo "VirtualBOX - GUI/SuuppressMessages"
 
 VBoxManage setextradata global "GUI/SuppressMessages" "remindAboutAutoCapture,remindAboutMouseIntegrationOn,showRuntimeError.warning.HostAudioNotResponding,remindAboutGoingSeamless,remindAboutInputCapture,remindAboutGoingFullscreen,remindAboutMouseIntegrationOff,confirmGoingSeamless,confirmInputCapture,remindAboutPausedVMInput,confirmVMReset,confirmGoingFullscreen,remindAboutWrongColorDepth"
 
-echo "pokrecem instalaciju F18-dev sesije"
-vagrant up
+echo "pokrecem instalaciju F18-dev sesije f18_dev_1:"
+vagrant up f18_dev_1
+
+echo " "
+echo " "
+echo "ostale sesije kreirajte sa komandama:"
+echo "$ vagrant up f18_dev_2"
+echo "$ vagrant up fmk_dev_1"
+echo " ..."
+echo " "
+echo "kraj priče"
 
 #if [[ ! $? -eq  0 ]] ; then
 #   echo "vagrant nije zavrsio posao do kraja .... ovo se zna cesto desiti pri instalaciji ubuntu paketa  ... "
