@@ -57,6 +57,14 @@ cookbook_file  HOME + "/.dosemurc"  do
 	source ".dosemurc"
 end
 
+
+cookbook_file  "/etc/profile.d/90_dosemu.conf"  do
+	owner "root"
+	group "root"
+	mode 0700
+	source ".dosemurc"
+end
+
 directory "/home/vagrant/.dosemu" do
   owner "vagrant" 
   group "vagrant"
