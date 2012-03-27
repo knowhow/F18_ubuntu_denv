@@ -37,12 +37,17 @@ log "---- ukloni nepotrebne pakete ---"
 end
 
 if variant == "lxde"
-
 	package "xscreensaver" do
 	   action :purge
 	end
-
 end
+
+if variant == "unity"
+	package "gnome-screensaver" do
+	   action :purge
+	end
+end
+
 
 
 log "----- F18 dev packages ----"
