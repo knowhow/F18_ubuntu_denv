@@ -73,11 +73,12 @@ Vagrant::Config.run do |config|
 
       ip_addr = "55.55.55.102"
       host_name = "fmk-dev-1.knowhow-erp.local"
-      build_fmk = false
-
+      build_fmk = true
+      role = "fmk"
+    
       ubuntu_archive_url = "http://archive.bring.out.ba/ubuntu/"
 
-      vm_config.vm.customize ["modifyvm", :id, "--memory",  768]
+      vm_config.vm.customize ["modifyvm", :id, "--memory",  1024]
       vm_config.vm.customize ["modifyvm", :id, "--name",  host_name]
 
       vm_config.vm.box = "precise-desktop-lxde"
@@ -89,12 +90,106 @@ Vagrant::Config.run do |config|
             chef.add_recipe "fmk"
             chef.add_recipe "hosts"
             chef.json.merge!({ 
-                    :fmk => { :ubuntu_archive_url => ubuntu_archive_url,  :build_fmk => build_fmk }, 
+                    :F18_3rd => { :install_harbour => false }, 
+                    :fmk => { :role => role, :ubuntu_archive_url => ubuntu_archive_url,  :build_fmk => build_fmk }, 
                     :hosts =>  { :hostname => host_name, :ip_addr => ip_addr }
             })
       end
 
   end
+
+  config.vm.define :fmk_pos_1 do |vm_config|
+
+      ip_addr = "55.55.55.201"
+      host_name = "fmk-pos-1.knowhow-erp.local"
+      build_fmk = false
+      role = "tops"
+
+      ubuntu_archive_url = "http://archive.bring.out.ba/ubuntu/"
+
+      vm_config.vm.customize ["modifyvm", :id, "--memory",  512]
+      vm_config.vm.customize ["modifyvm", :id, "--name",  host_name]
+
+      vm_config.vm.box = "precise-desktop-lxde"
+     
+      vm_config.vm.network(:hostonly, ip_addr)
+
+      vm_config.vm.provision :chef_solo do |chef|
+            chef.cookbooks_path =  "cookbooks"
+            chef.add_recipe "fmk"
+            chef.add_recipe "F18_3rd"
+            chef.add_recipe "hosts"
+            chef.json.merge!({ 
+                    :F18_3rd => { :install_harbour => false }, 
+                    :fmk => { :role => role, :ubuntu_archive_url => ubuntu_archive_url,  :build_fmk => build_fmk }, 
+                    :hosts =>  { :hostname => host_name, :ip_addr => ip_addr }
+            })
+      end
+
+  end
+
+
+  config.vm.define :fmk_pos_2 do |vm_config|
+
+      ip_addr = "55.55.55.202"
+      host_name = "fmk-pos-2.knowhow-erp.local"
+      build_fmk = false
+      role = "tops"
+
+      ubuntu_archive_url = "http://archive.bring.out.ba/ubuntu/"
+
+      vm_config.vm.customize ["modifyvm", :id, "--memory",  512]
+      vm_config.vm.customize ["modifyvm", :id, "--name",  host_name]
+
+      vm_config.vm.box = "precise-desktop-lxde"
+     
+      vm_config.vm.network(:hostonly, ip_addr)
+
+      vm_config.vm.provision :chef_solo do |chef|
+            chef.cookbooks_path =  "cookbooks"
+            chef.add_recipe "fmk"
+            chef.add_recipe "F18_3rd"
+            chef.add_recipe "hosts"
+            chef.json.merge!({ 
+                    :F18_3rd => { :install_harbour => false }, 
+                    :fmk => { :role => role, :ubuntu_archive_url => ubuntu_archive_url,  :build_fmk => build_fmk }, 
+                    :hosts =>  { :hostname => host_name, :ip_addr => ip_addr }
+            })
+      end
+
+  end
+
+
+  config.vm.define :fmk_pos_knjig do |vm_config|
+
+      ip_addr = "55.55.55.203"
+      host_name = "fmk-pos-knjig.knowhow-erp.local"
+      build_fmk = false
+      role = "tops_knjig"
+
+      ubuntu_archive_url = "http://archive.bring.out.ba/ubuntu/"
+
+      vm_config.vm.customize ["modifyvm", :id, "--memory",  512]
+      vm_config.vm.customize ["modifyvm", :id, "--name",  host_name]
+
+      vm_config.vm.box = "precise-desktop-lxde"
+     
+      vm_config.vm.network(:hostonly, ip_addr)
+
+      vm_config.vm.provision :chef_solo do |chef|
+            chef.cookbooks_path =  "cookbooks"
+            chef.add_recipe "fmk"
+            chef.add_recipe "F18_3rd"
+            chef.add_recipe "hosts"
+            chef.json.merge!({ 
+                    :F18_3rd => { :install_harbour => false }, 
+                    :fmk => { :role => role, :ubuntu_archive_url => ubuntu_archive_url,  :build_fmk => build_fmk }, 
+                    :hosts =>  { :hostname => host_name, :ip_addr => ip_addr }
+            })
+      end
+
+  end
+
 
 
 

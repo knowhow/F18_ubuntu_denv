@@ -1,4 +1,9 @@
 build_fmk = node[:fmk][:build_fmk]
+fmk_role = node[:fmk][:role]
+
+
+GCODE_URL="http://knowhow-erp-f18.googlecode.com/files/"
+
 
 HOME="/home/vagrant"
 GIT_ROOT = HOME + "/github"
@@ -62,7 +67,7 @@ cookbook_file  "/etc/profile.d/90_dosemu.conf"  do
 	owner "root"
 	group "root"
 	mode 0644
-	source ".dosemurc"
+	source "90_dosemu.conf"
 end
 
 directory "/home/vagrant/.dosemu" do
@@ -78,6 +83,103 @@ directory "/home/vagrant/.dosemu/drive_c" do
 end
 
 
+if (fmk_role == "tops") or (fmk_role == "tops_knjig")
+
+	directory "/home/vagrant/.wine" do
+	  owner "root" 
+	  group "root"
+	  mode  "0755"
+	end
+
+	directory "/home/vagrant/.wine/drive_c" do
+	  owner "root" 
+	  group "root"
+	  mode  "0755"
+	end
+
+
+       directory "/home/vagrant/.dosemu/drive_c" do
+	  owner "vagrant" 
+	  group "vagrant"
+	  mode  "0755"
+	end
+
+7
+       ["tops", "sigma"].each do |item|
+	       directory "/home/vagrant/.dosemu/drive_c/" + item do
+		  owner "vagrant" 
+		  group "vagrant"
+		  mode  "0755"
+		end
+       end
+
+
+       remote_file "/home/vagrant/.dosemu/drive_c/tops.7z" do
+               source GCODE_URL + "tops.7z"
+               mode "0644"
+       end
+
+       bash "extract tops.7z"   do
+	      user "vagrant"
+	      user "vagrant"
+	      cwd HOME
+	      code <<-EOH
+
+	   export HOME=#{HOME}
+
+	   cd $HOME/.dosemu/drive_c
+           7z x -y tops.7z
+
+	EOH
+
+	end
+
+
+end
+
+
+if (fmk_role == "tops_knjig")
+
+directory "/home/vagrant/.dosemu/drive_c/kase"  do
+  owner "vagrant" 
+  group "vagrant"
+  mode  "0755"
+end
+
+
+bash "knjig ln"   do
+      user "root"
+      cwd HOME
+      code <<-EOH
+
+   export HOME=#{HOME}
+
+   # preslikaj sve dosemu direktorije u wine
+
+   DIR=$HOME/.dosemu/drive_c/tops 
+   if [[ -d $DIR ]]; then
+      ln -s $DIR $HOME/.wine/drive_c/tops
+   fi
+
+   DIR=$HOME/.dosemu/drive_c/kase 
+   if [[ -d $DIR ]]; then
+      ln -s $DIR $HOME/.wine/drive_c/kase
+   fi
+
+   DIR=$HOME/.dosemu/drive_c/sigma
+   if [[ -d $DIR ]]; then
+      ln -s $DIR $HOME/.wine/drive_c/sigma
+   fi
+
+
+EOH
+
+end
+
+
+
+
+end
 
 
 log "ako ne možete pristupiti samba file serveru zvijer-2.bring.out.ba, onda trebate ručno instalirati"
@@ -88,6 +190,9 @@ log "pa ga ručno instalirati unutar sesije na lokaciju ~/.dosemu"
 log " "
 log "ako se nalazite u officesa bring.out onda će ovaj posao vagrant/chef uraditi za vas ..."
 
+
+
+if build_fmk
 bash "instaliraj sa zvijer-2 bringout/fmk "   do
       user "vagrant"
       cwd HOME
@@ -116,6 +221,7 @@ bash "instaliraj sa zvijer-2 bringout/fmk "   do
 EOH
 
 end
+end
 
 
 cookbook_file  HOME + "/.dosemu/drive_c/autoexec.bat"  do
@@ -133,6 +239,9 @@ cookbook_file  HOME + "/.dosemu/drive_c/config.sys"  do
 	source "config.sys"
 end
 
+
+
+if build_fmk
 
 GIT_ROOT="/home/vagrant/github"
 GIT_URL_ROOT="git://github.com/bringout-fmk"
@@ -152,7 +261,6 @@ end
 end
 
 
-
 directory "/home/vagrant/github/fmk_lib/lib" do
   owner "vagrant" 
   group "vagrant"
@@ -164,6 +272,7 @@ directory "/home/vagrant/github/fmk_lib/exe" do
   group "vagrant"
   mode  "0755"
 end
+
 
 log "kreiraj potrebne direktorije, ln -s itd ..."
 
@@ -191,37 +300,22 @@ EOH
 end
 
 
-
-if build_fmk
-
-[ "fmk_lib", "fmk_c", "fin", "kalk", "fakt", "pos" ].each do |item| 
+[ "fmk_lib", "fmk_c", "fin", "kalk", "fakt", "pos", "ld" ].each do |item| 
     
-bash "build fmk: " + item   do
-      user "vagrant"
-      cwd GIT_ROOT + "/" + item
-      code <<-EOH
+	bash "build fmk: " + item   do
+	      user "vagrant"
+	      cwd GIT_ROOT + "/" + item
+	      code <<-EOH
 
-   export HOME=#{HOME}
-   ./build.sh
+	   export HOME=#{HOME}
+	   ./build.sh
 
-EOH
-
-end
+	EOH
 
 end
 
 end
 
-directory "/home/vagrant/.wine" do
-  owner "vagrant" 
-  group "vagrant"
-  mode  "0755"
-end
-
-directory "/home/vagrant/.wine/drive_c" do
-  owner "vagrant" 
-  group "vagrant"
-  mode  "0755"
 end
 
 
