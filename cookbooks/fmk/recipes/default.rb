@@ -142,11 +142,12 @@
 		end
        end
 
-
        remote_file HOME + "/c_tops.7z" do
-               source GCODE_URL_FMK + "/c_tops.7z"
+               source GCODE_URL_FMK + "/c_tops_with_oid.7z"
                mode "0644"
-               checksum "1e4a3b888a6528083fa6b3b919d2566d9bf844c9"
+               checksum "c6996bb702fb4635ac9030fc789f93968c0d9127"
+               #c_tops
+               #checksum "1e4a3b888a6528083fa6b3b919d2566d9bf844c9"
        end
 
        bash "extract c_tops.7z"   do
@@ -207,19 +208,19 @@ if (fmk_role == "tops")
 	end
 
 
-	log "fmk.ini kumpath, sqlpar.dbf - parametri OID-a za prodajno mjesto"
+	log "fmk.ini - SQLLog=D kumpath, sqlpar.dbf - parametri OID-a za prodajno mjesto"
 	cookbook_file  HOME + "/tops/kum1/fmk.ini"  do
 		owner USER
 		group USER
 		mode 0644
-		source "tops/kum_path/fmk.ini"
+		source "tops/kum_path/fmk_sql.ini"
 	end
 
 	cookbook_file  HOME + "/tops/kum1/sql/sqlpar.dbf"  do
 		owner USER
 		group USER
 		mode 0644
-		source "tops/kum1_sqlpar.dbf"
+		source "tops/kum_path/10_sqlpar.dbf"
 	end
 
 
