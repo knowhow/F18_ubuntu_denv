@@ -38,7 +38,7 @@ log "---- ukloni nepotrebne pakete ---"
 end
 
 log "----- FMK runtime packages ----"
-[ "p7zip-full", "smbclient", "dosemu", "cups-pdf", "wine", "winetricks", "vim-gtk"].each do |item|
+[ "p7zip-full", "smbclient", "dosemu", "xfonts-terminus-dos",  "cups-pdf", "wine", "winetricks", "vim-gtk"].each do |item|
    package item do
       action :install
    end
@@ -69,6 +69,14 @@ cookbook_file  "/etc/profile.d/90_dosemu.conf"  do
 	mode 0644
 	source "90_dosemu.conf"
 end
+
+cookbook_file  "/etc/dosemu/dosemu.conf"  do
+	owner "root"
+	group "root"
+	mode 0644
+	source "dosemu.conf"
+end
+
 
 
 log "dosemu direktoriji"
