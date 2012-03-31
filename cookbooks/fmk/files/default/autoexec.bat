@@ -1,5 +1,5 @@
 @echo off
-path c:\bout;z:\bin;z:\gnu;z:\dosemu
+path c:\tops;c:\sigma;c:\bout;z:\bin;z:\gnu;z:\dosemu
 set TEMP=c:\tmp
 prompt $P$G
 unix -s DOSDRIVE_D

@@ -2,10 +2,10 @@ build_fmk = node[:fmk][:build_fmk]
 fmk_role = node[:fmk][:role]
 
 
-GCODE_URL="http://knowhow-erp-f18.googlecode.com/files/"
+GCODE_URL_FMK="http://knowhow-erp-fmk.googlecode.com/files"
 
-
-HOME="/home/vagrant"
+USER="vagrant"
+HOME="/home/"+USER
 GIT_ROOT = HOME + "/github"
 
 
@@ -70,65 +70,104 @@ cookbook_file  "/etc/profile.d/90_dosemu.conf"  do
 	source "90_dosemu.conf"
 end
 
+
+log "dosemu direktoriji"
 directory "/home/vagrant/.dosemu" do
   owner "vagrant" 
   group "vagrant"
   mode  "0755"
 end
 
-directory "/home/vagrant/.dosemu/drive_c" do
+directory HOME + "/.dosemu/drive_c" do
   owner "vagrant" 
   group "vagrant"
   mode  "0755"
 end
 
+remote_file HOME + "/.dosemu/drive_c/fmk_drive_c.7z" do
+       source GCODE_URL_FMK + "/fmk_drive_c.7z"
+       mode "0644"
+       checksum "5054e8c49bb72e12cfb4ef3ac2aa6078822ad236"
+end
+
+
+bash "extract fmk_drive_c.7z"   do
+	      user USER
+	      user USER
+	      cwd HOME + "/.dosemu/drive_c"
+	      code <<-EOH
+
+	   export HOME=#{HOME}
+           if [[ ! -f tops/TOPS.exe ]]; then
+               7z x -y fmk_drive_c.7z
+           fi
+
+	EOH
+end
+
+
+
 
 if (fmk_role == "tops") or (fmk_role == "tops_knjig")
 
-	directory "/home/vagrant/.wine" do
+        
+        log "wine direktoriji - root owner"
+
+	directory HOME + "/.wine" do
 	  owner "root" 
 	  group "root"
 	  mode  "0755"
 	end
 
-	directory "/home/vagrant/.wine/drive_c" do
+	directory HOME + "/.wine/drive_c" do
 	  owner "root" 
 	  group "root"
 	  mode  "0755"
 	end
 
 
-       directory "/home/vagrant/.dosemu/drive_c" do
-	  owner "vagrant" 
-	  group "vagrant"
-	  mode  "0755"
-	end
-
-7
        ["tops", "sigma"].each do |item|
-	       directory "/home/vagrant/.dosemu/drive_c/" + item do
-		  owner "vagrant" 
-		  group "vagrant"
+	       directory HOME + item do
+		  owner USER 
+		  group USER
 		  mode  "0755"
 		end
        end
 
 
-       remote_file "/home/vagrant/.dosemu/drive_c/tops.7z" do
-               source GCODE_URL + "tops.7z"
+	directory HOME + "/sigma"  do
+	  owner USER
+	  group USER
+	  mode  "0755"
+	end
+	directory HOME + "/sigma/in"  do
+	  owner USER
+	  group USER
+	  mode  "0755"
+	end
+	directory HOME + "/sigma/out"  do
+	  owner USER
+	  group USER
+	  mode  "0755"
+	end
+
+       remote_file HOME + "/c_tops.7z" do
+               source GCODE_URL_FMK + "/c_tops.7z"
                mode "0644"
+               checksum "1e4a3b888a6528083fa6b3b919d2566d9bf844c9"
        end
 
-       bash "extract tops.7z"   do
-	      user "vagrant"
-	      user "vagrant"
+       bash "extract c_tops.7z"   do
+	      user USER
+	      user USER
 	      cwd HOME
 	      code <<-EOH
 
 	   export HOME=#{HOME}
 
-	   cd $HOME/.dosemu/drive_c
-           7z x -y tops.7z
+           if [[ ! -f tops/TOPS.exe ]]; then
+               7z x -y c_tops.7z
+           fi
 
 	EOH
 
@@ -140,14 +179,63 @@ end
 
 if (fmk_role == "tops_knjig")
 
-directory "/home/vagrant/.dosemu/drive_c/kase"  do
-  owner "vagrant" 
-  group "vagrant"
+directory HOME + "/kase"  do
+  owner USER
+  group USER
   mode  "0755"
 end
 
+cookbook_file  HOME + "/tops/fmk.ini"  do
+	owner USER
+	group USER
+	mode 0644
+	source "tops_knjig/exe_path/fmk.ini"
+end
 
-bash "knjig ln"   do
+
+cookbook_file  "/usr/local/bin/run_kase.sh"  do
+	owner USER
+	group USER
+	mode 0744
+	source "tops_knjig/run_kase.sh"
+end
+
+
+end
+
+
+if (fmk_role == "tops")
+
+	cookbook_file  HOME + "/tops/fmk.ini"  do
+		owner USER
+		group USER
+		mode 0644
+		source "tops/exe_path/fmk.ini"
+	end
+
+
+	cookbook_file  "/usr/local/bin/run_tops.sh"  do
+		owner USER
+		group USER
+		mode 0744
+		source "tops/run_tops.sh"
+	end
+
+end
+
+
+if (fmk_role == "tops") || (fmk_role == "tops_knjig")
+
+
+cookbook_file  "/usr/local/bin/run_gateway.sh"  do
+	owner USER
+	group USER
+	mode 0744
+	source "tops/run_gateway.sh"
+end
+
+
+bash "ln-s dosemu, wine sa home direktrijima"   do
       user "root"
       cwd HOME
       code <<-EOH
@@ -156,30 +244,52 @@ bash "knjig ln"   do
 
    # preslikaj sve dosemu direktorije u wine
 
-   DIR=$HOME/.dosemu/drive_c/tops 
-   if [[ -d $DIR ]]; then
+   DIR=$HOME/tops 
+   if [[ ! -d $DIR ]]; then
       ln -s $DIR $HOME/.wine/drive_c/tops
+      ln -s $DIR $HOME/.dosemu/drive_c/tops
    fi
 
-   DIR=$HOME/.dosemu/drive_c/kase 
-   if [[ -d $DIR ]]; then
+   DIR=$HOME/kase 
+   if [[ ! -d $DIR ]]; then
       ln -s $DIR $HOME/.wine/drive_c/kase
+      ln -s $DIR $HOME/.dosemu/drive_c/kase
    fi
 
-   DIR=$HOME/.dosemu/drive_c/sigma
-   if [[ -d $DIR ]]; then
+   DIR=$HOME/sigma 
+   if [[ ! -d $DIR ]]; then
       ln -s $DIR $HOME/.wine/drive_c/sigma
+      ln -s $DIR $HOME/.dosemu/drive_c/sigma
    fi
-
 
 EOH
 
 end
 
 
+end
+
+if (fmk_role == "tops")
+
+
+bash "run"   do
+      user "root"
+      cwd HOME
+      code <<-EOH
+
+   export HOME=#{HOME}
+
+   DISPLAY=:0 run_gateway.sh
+   DISPLAY=:0 run_tops.sh
+EOH
+
+end
 
 
 end
+
+
+
 
 
 log "ako ne možete pristupiti samba file serveru zvijer-2.bring.out.ba, onda trebate ručno instalirati"
@@ -222,24 +332,6 @@ EOH
 
 end
 end
-
-
-cookbook_file  HOME + "/.dosemu/drive_c/autoexec.bat"  do
-	owner "vagrant"
-	group "vagrant"
-	mode 0755
-	source "autoexec.bat"
-end
-
-
-cookbook_file  HOME + "/.dosemu/drive_c/config.sys"  do
-	owner "vagrant"
-	group "vagrant"
-	mode 0755
-	source "config.sys"
-end
-
-
 
 if build_fmk
 
@@ -317,6 +409,25 @@ end
 end
 
 end
+
+
+log "postavi config.sys autoexec.bat"
+
+cookbook_file  HOME + "/.dosemu/drive_c/autoexec.bat"  do
+	owner USER
+	group USER
+	mode 0755
+	source "autoexec.bat"
+end
+
+
+cookbook_file  HOME + "/.dosemu/drive_c/config.sys"  do
+	owner USER
+	group USER
+	mode 0755
+	source "config.sys"
+end
+
 
 
 
