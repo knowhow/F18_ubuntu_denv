@@ -1,163 +1,147 @@
-build_fmk = node[:fmk][:build_fmk]
-fmk_role = node[:fmk][:role]
+	build_fmk = node[:fmk][:build_fmk]
+	fmk_role = node[:fmk][:role]
 
 
-GCODE_URL_FMK="http://knowhow-erp-fmk.googlecode.com/files"
+	GCODE_URL_FMK="http://knowhow-erp-fmk.googlecode.com/files"
 
-USER="vagrant"
-HOME="/home/"+USER
-GIT_ROOT = HOME + "/github"
-
-
-apt_repo "main_ubuntu" do
-      url node[:fmk][:ubuntu_archive_url]
-      keyserver "keyserver.ubuntu.com"
-      key_package "ubuntu-keyring"
-      distribution "precise"
-      components ["main", "universe"]
-      source_packages false
-end
+	USER="vagrant"
+	HOME="/home/"+USER
+	GIT_ROOT = HOME + "/github"
 
 
-script "apt-get update" do
-    user "root"
-    interpreter "sh"
-    code "apt-get update"
-end
-
-
-package "sqlite3" do
-    action :install
-end
-
-log "---- ukloni nepotrebne pakete ---"
-["bluez", "apport", "update-notifier", "oneconf", "telepathy-indicator",  "xscreensaver" ].each do |item|
-    package item do
-       action :purge
-    end
-end
-
-log "----- FMK runtime packages ----"
-[ "p7zip-full", "smbclient", "dosemu", "xfonts-terminus-dos",  "cups-pdf", "wine", "winetricks", "vim-gtk"].each do |item|
-   package item do
-      action :install
-   end
-end
-
-service "cups" do
-   action :stop
-end
-
-directory "/home/vagrant/github" do
-  owner "vagrant" 
-  group "vagrant"
-  mode  "0755"
-end
-
-
-cookbook_file  HOME + "/.dosemurc"  do
-	owner "vagrant"
-	group "vagrant"
-	mode 0755
-	source ".dosemurc"
-end
-
-
-cookbook_file  "/etc/profile.d/90_dosemu.conf"  do
-	owner "root"
-	group "root"
-	mode 0644
-	source "90_dosemu.conf"
-end
-
-cookbook_file  "/etc/dosemu/dosemu.conf"  do
-	owner "root"
-	group "root"
-	mode 0644
-	source "dosemu.conf"
-end
-
-
-
-log "dosemu direktoriji"
-directory "/home/vagrant/.dosemu" do
-  owner "vagrant" 
-  group "vagrant"
-  mode  "0755"
-end
-
-directory HOME + "/.dosemu/drive_c" do
-  owner "vagrant" 
-  group "vagrant"
-  mode  "0755"
-end
-
-remote_file HOME + "/.dosemu/drive_c/fmk_drive_c.7z" do
-       source GCODE_URL_FMK + "/fmk_drive_c.7z"
-       mode "0644"
-       checksum "5054e8c49bb72e12cfb4ef3ac2aa6078822ad236"
-end
-
-
-bash "extract fmk_drive_c.7z"   do
-	      user USER
-	      user USER
-	      cwd HOME + "/.dosemu/drive_c"
-	      code <<-EOH
-
-	   export HOME=#{HOME}
-           if [[ ! -f tops/TOPS.exe ]]; then
-               7z x -y fmk_drive_c.7z
-           fi
-
-	EOH
-end
-
-
-
-
-if (fmk_role == "tops") or (fmk_role == "tops_knjig")
-
-        
-        log "wine direktoriji - root owner"
-
-	directory HOME + "/.wine" do
-	  owner "root" 
-	  group "root"
-	  mode  "0755"
+	apt_repo "main_ubuntu" do
+	      url node[:fmk][:ubuntu_archive_url]
+	      keyserver "keyserver.ubuntu.com"
+	      key_package "ubuntu-keyring"
+	      distribution "precise"
+	      components ["main", "universe"]
+	      source_packages false
 	end
 
-	directory HOME + "/.wine/drive_c" do
-	  owner "root" 
-	  group "root"
+
+	script "apt-get update" do
+	    user "root"
+	    interpreter "sh"
+	    code "apt-get update"
+	end
+
+
+	package "sqlite3" do
+	    action :install
+	end
+
+	log "---- ukloni nepotrebne pakete ---"
+	["bluez", "apport", "update-notifier", "oneconf", "telepathy-indicator",  "xscreensaver" ].each do |item|
+	    package item do
+	       action :purge
+	    end
+	end
+
+	log "----- FMK runtime packages ----"
+	[ "p7zip-full", "smbclient", "dosemu", "xfonts-terminus-dos",  "cups-pdf", "wine", "winetricks", "vim-gtk"].each do |item|
+	   package item do
+	      action :install
+	   end
+	end
+
+	service "cups" do
+	   action :stop
+	end
+
+	directory "/home/vagrant/github" do
+	  owner "vagrant" 
+	  group "vagrant"
 	  mode  "0755"
 	end
 
 
-       ["tops", "sigma"].each do |item|
-	       directory HOME + item do
+	cookbook_file  HOME + "/.dosemurc"  do
+		owner "vagrant"
+		group "vagrant"
+		mode 0755
+		source ".dosemurc"
+	end
+
+
+	cookbook_file  "/etc/profile.d/90_dosemu.conf"  do
+		owner "root"
+		group "root"
+		mode 0644
+		source "90_dosemu.conf"
+	end
+
+	cookbook_file  "/etc/dosemu/dosemu.conf"  do
+		owner "root"
+		group "root"
+		mode 0644
+		source "dosemu.conf"
+	end
+
+
+
+	log "dosemu direktoriji"
+	directory "/home/vagrant/.dosemu" do
+	  owner "vagrant" 
+	  group "vagrant"
+	  mode  "0755"
+	end
+
+	directory HOME + "/.dosemu/drive_c" do
+	  owner "vagrant" 
+	  group "vagrant"
+	  mode  "0755"
+	end
+
+	remote_file HOME + "/.dosemu/drive_c/fmk_drive_c.7z" do
+	       source GCODE_URL_FMK + "/fmk_drive_c.7z"
+	       mode "0644"
+	       checksum "5054e8c49bb72e12cfb4ef3ac2aa6078822ad236"
+	end
+
+
+	bash "extract fmk_drive_c.7z"   do
+		      user USER
+		      user USER
+		      cwd HOME + "/.dosemu/drive_c"
+		      code <<-EOH
+
+		   export HOME=#{HOME}
+		   if [[ ! -f tops/TOPS.exe ]]; then
+		       7z x -y fmk_drive_c.7z
+		   fi
+
+		EOH
+	end
+
+
+
+
+	if (fmk_role == "tops") or (fmk_role == "tops_knjig")
+
+		
+		log "wine direktoriji - root owner"
+
+		directory HOME + "/.wine" do
+		  owner "root" 
+		  group "root"
+		  mode  "0755"
+		end
+
+		directory HOME + "/.wine/drive_c" do
+		  owner "root" 
+		  group "root"
+		  mode  "0755"
+		end
+
+
+	       ["tops", "tops/kum1", "tops/kum1/sql", "sigma", "sigma/in", "sigma/out" ].each do |item|
+	       directory HOME + "/" + item do
 		  owner USER 
 		  group USER
 		  mode  "0755"
 		end
        end
 
-
-	directory HOME + "/sigma"  do
-	  owner USER
-	  group USER
-	  mode  "0755"
-	end
-	directory HOME + "/sigma/in"  do
-	  owner USER
-	  group USER
-	  mode  "0755"
-	end
-	directory HOME + "/sigma/out"  do
-	  owner USER
-	  group USER
-	  mode  "0755"
-	end
 
        remote_file HOME + "/c_tops.7z" do
                source GCODE_URL_FMK + "/c_tops.7z"
@@ -214,11 +198,28 @@ end
 
 if (fmk_role == "tops")
 
+        log "fmk.ini exepath - tops i gateway parametri"
 	cookbook_file  HOME + "/tops/fmk.ini"  do
 		owner USER
 		group USER
 		mode 0644
 		source "tops/exe_path/fmk.ini"
+	end
+
+
+	log "fmk.ini kumpath, sqlpar.dbf - parametri OID-a za prodajno mjesto"
+	cookbook_file  HOME + "/tops/kum1/fmk.ini"  do
+		owner USER
+		group USER
+		mode 0644
+		source "tops/kum_path/fmk.ini"
+	end
+
+	cookbook_file  HOME + "/tops/kum1/sql/sqlpar.dbf"  do
+		owner USER
+		group USER
+		mode 0644
+		source "tops/kum1_sqlpar.dbf"
 	end
 
 
