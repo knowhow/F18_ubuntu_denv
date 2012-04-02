@@ -1,170 +1,170 @@
-	build_fmk = node[:fmk][:build_fmk]
-	fmk_role = node[:fmk][:role]
+build_fmk = node[:fmk][:build_fmk]
+fmk_role = node[:fmk][:role]
 
 
-	GCODE_URL_FMK="http://knowhow-erp-fmk.googlecode.com/files"
+GCODE_URL_FMK="http://knowhow-erp-fmk.googlecode.com/files"
 
-	USER="vagrant"
-	HOME="/home/"+USER
-	GIT_ROOT = HOME + "/github"
-
-
-	apt_repo "main_ubuntu" do
-	      url node[:fmk][:ubuntu_archive_url]
-	      keyserver "keyserver.ubuntu.com"
-	      key_package "ubuntu-keyring"
-	      distribution "precise"
-	      components ["main", "universe"]
-	      source_packages false
-	end
+USER="vagrant"
+HOME="/home/"+USER
+GIT_ROOT = HOME + "/github"
 
 
-	script "apt-get update" do
-	    user "root"
-	    interpreter "sh"
-	    code "apt-get update"
-	end
+apt_repo "main_ubuntu" do
+      url node[:fmk][:ubuntu_archive_url]
+      keyserver "keyserver.ubuntu.com"
+      key_package "ubuntu-keyring"
+      distribution "precise"
+      components ["main", "universe"]
+      source_packages false
+end
 
 
-	package "sqlite3" do
-	    action :install
-	end
-
-	log "---- ukloni nepotrebne pakete ---"
-	["bluez", "apport", "update-notifier", "oneconf", "telepathy-indicator",  "xscreensaver" ].each do |item|
-	    package item do
-	       action :purge
-	    end
-	end
-
-	log "----- FMK runtime packages ----"
-	[ "p7zip-full", "smbclient", "dosemu", "xfonts-terminus-dos",  "cups-pdf", "wine", "winetricks", "vim-gtk"].each do |item|
-	   package item do
-	      action :install
-	   end
-	end
-
-	service "cups" do
-	   action :stop
-	end
-
-	directory "/home/vagrant/github" do
-	  owner "vagrant" 
-	  group "vagrant"
-	  mode  "0755"
-	end
+script "apt-get update" do
+    user "root"
+    interpreter "sh"
+    code "apt-get update"
+end
 
 
-	cookbook_file  HOME + "/.dosemurc"  do
-		owner "vagrant"
-		group "vagrant"
-		mode 0755
-		source ".dosemurc"
-	end
+package "sqlite3" do
+    action :install
+end
+
+log "---- ukloni nepotrebne pakete ---"
+["bluez", "apport", "update-notifier", "oneconf", "telepathy-indicator",  "xscreensaver" ].each do |item|
+    package item do
+       action :purge
+    end
+end
+
+log "----- FMK runtime packages ----"
+[ "p7zip-full", "smbclient", "dosemu", "xfonts-terminus-dos",  "cups-pdf", "wine", "winetricks", "vim-gtk"].each do |item|
+   package item do
+      action :install
+   end
+end
+
+service "cups" do
+   action :stop
+end
+
+directory "/home/vagrant/github" do
+  owner "vagrant" 
+  group "vagrant"
+  mode  "0755"
+end
 
 
-	cookbook_file  "/etc/profile.d/90_dosemu.conf"  do
-		owner "root"
-		group "root"
-		mode 0644
-		source "90_dosemu.conf"
-	end
-
-	cookbook_file  "/etc/dosemu/dosemu.conf"  do
-		owner "root"
-		group "root"
-		mode 0644
-		source "dosemu.conf"
-	end
+cookbook_file  HOME + "/.dosemurc"  do
+	owner "vagrant"
+	group "vagrant"
+	mode 0755
+	source ".dosemurc"
+end
 
 
+cookbook_file  "/etc/profile.d/90_dosemu.conf"  do
+	owner "root"
+	group "root"
+	mode 0644
+	source "90_dosemu.conf"
+end
 
-	log "dosemu direktoriji"
-	directory "/home/vagrant/.dosemu" do
-	  owner "vagrant" 
-	  group "vagrant"
-	  mode  "0755"
-	end
-
-	directory HOME + "/.dosemu/drive_c" do
-	  owner "vagrant" 
-	  group "vagrant"
-	  mode  "0755"
-	end
-
-	remote_file HOME + "/.dosemu/drive_c/fmk_drive_c.7z" do
-	       source GCODE_URL_FMK + "/fmk_drive_c.7z"
-	       mode "0644"
-	       checksum "5054e8c49bb72e12cfb4ef3ac2aa6078822ad236"
-	end
-
-
-	bash "extract fmk_drive_c.7z"   do
-		      user USER
-		      user USER
-		      cwd HOME + "/.dosemu/drive_c"
-		      code <<-EOH
-
-		   export HOME=#{HOME}
-		   if [[ ! -f tops/TOPS.exe ]]; then
-		       7z x -y fmk_drive_c.7z
-		   fi
-
-		EOH
-	end
+cookbook_file  "/etc/dosemu/dosemu.conf"  do
+	owner "root"
+	group "root"
+	mode 0644
+	source "dosemu.conf"
+end
 
 
 
+log "dosemu direktoriji"
+directory "/home/vagrant/.dosemu" do
+  owner "vagrant" 
+  group "vagrant"
+  mode  "0755"
+end
 
-	if (fmk_role == "tops") or (fmk_role == "tops_knjig")
+directory HOME + "/.dosemu/drive_c" do
+  owner "vagrant" 
+  group "vagrant"
+  mode  "0755"
+end
 
-		
-		log "wine direktoriji - root owner"
-
-		directory HOME + "/.wine" do
-		  owner "root" 
-		  group "root"
-		  mode  "0755"
-		end
-
-		directory HOME + "/.wine/drive_c" do
-		  owner "root" 
-		  group "root"
-		  mode  "0755"
-		end
+remote_file HOME + "/.dosemu/drive_c/fmk_drive_c.7z" do
+       source GCODE_URL_FMK + "/fmk_drive_c.7z"
+       mode "0644"
+       checksum "5054e8c49bb72e12cfb4ef3ac2aa6078822ad236"
+end
 
 
-	       ["tops", "tops/kum1", "tops/kum1/sql", "sigma", "sigma/in", "sigma/out" ].each do |item|
-	       directory HOME + "/" + item do
-		  owner USER 
-		  group USER
-		  mode  "0755"
-		end
-       end
-
-       remote_file HOME + "/c_tops.7z" do
-               source GCODE_URL_FMK + "/c_tops_with_oid.7z"
-               mode "0644"
-               checksum "c6996bb702fb4635ac9030fc789f93968c0d9127"
-               #c_tops
-               #checksum "1e4a3b888a6528083fa6b3b919d2566d9bf844c9"
-       end
-
-       bash "extract c_tops.7z"   do
+bash "extract fmk_drive_c.7z"   do
 	      user USER
 	      user USER
-	      cwd HOME
+	      cwd HOME + "/.dosemu/drive_c"
 	      code <<-EOH
 
 	   export HOME=#{HOME}
-
-           if [[ ! -f tops/TOPS.exe ]]; then
-               7z x -y c_tops.7z
-           fi
+	   if [[ ! -f tops/TOPS.exe ]]; then
+	       7z x -y fmk_drive_c.7z
+	   fi
 
 	EOH
+end
 
+
+
+
+if (fmk_role == "tops") or (fmk_role == "tops_knjig")
+
+	
+	log "wine direktoriji - root owner"
+
+	directory HOME + "/.wine" do
+	  owner "root" 
+	  group "root"
+	  mode  "0755"
 	end
+
+	directory HOME + "/.wine/drive_c" do
+	  owner "root" 
+	  group "root"
+	  mode  "0755"
+	end
+
+
+       ["tops", "tops/kum1", "tops/kum1/sql", "sigma", "sigma/in", "sigma/out" ].each do |item|
+       directory HOME + "/" + item do
+	  owner USER 
+	  group USER
+	  mode  "0755"
+	end
+end
+
+remote_file HOME + "/c_tops.7z" do
+       source GCODE_URL_FMK + "/c_tops_with_oid.7z"
+       mode "0644"
+       checksum "c6996bb702fb4635ac9030fc789f93968c0d9127"
+       #c_tops
+       #checksum "1e4a3b888a6528083fa6b3b919d2566d9bf844c9"
+end
+
+bash "extract c_tops.7z"   do
+      user USER
+      user USER
+      cwd HOME
+      code <<-EOH
+
+   export HOME=#{HOME}
+
+   if [[ ! -f tops/TOPS.exe ]]; then
+       7z x -y c_tops.7z
+   fi
+
+EOH
+
+end
 
 
 end

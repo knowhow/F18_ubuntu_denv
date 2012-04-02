@@ -117,6 +117,7 @@ Vagrant::Config.run do |config|
       vm_config.vm.provision :chef_solo do |chef|
             chef.cookbooks_path =  "cookbooks"
             chef.add_recipe "fmk"
+            chef.add_recipe "fmk::tremol_wine"
             chef.add_recipe "F18_3rd"
             chef.add_recipe "hosts"
             chef.json.merge!({ 
