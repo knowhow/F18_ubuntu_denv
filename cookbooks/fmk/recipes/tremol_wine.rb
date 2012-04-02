@@ -19,7 +19,8 @@ GCODE_URL_FMK="http://knowhow-erp-fmk.googlecode.com/files"
 remote_file HOME + "/wine_tremol.7z" do
 	  source GCODE_URL_FMK + "/wine_tremol.7z"
 	  mode "0644"
-          checksum "68fa6393ccf210efc96686b566215a61cffbbfd4"
+          #sha256
+          checksum "2231323b4c455639aad6240a1140e32565e1d0bfc6ce46de3ac2c354d8ca78b1"
 end
 
 
