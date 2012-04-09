@@ -22,11 +22,10 @@ if tremol_ver == "225"
         source GCODE_URL_FMK + "/wine_tremol_225.7z"
         mode "0644"
         #sha256
-        checksum = "23062cd56255cada20db230e4369e26f9134d38b"
+        checksum "97f3af2a3f0bbc230f15c9c79df0f2b7c4039bca818a05167496310051db7cce"
     end
 
 end
-
 
 bash "install wine_tremol.7z" do
     user  USER
@@ -64,13 +63,29 @@ bash "ln-s fiscal tremol - tops"   do
 
    export HOME=#{HOME}
 
-   DIR=$HOME/.wine_tremol/fiscal
-   DIR_DEST=$HOME/tops/fiscal
+   DIR=$HOME/.wine_tremol/drive_c/fiscal
+   DIR_DEST=$HOME/.dosemu/drive_c/fiscal
 
-   if [ -d $DIR ] && [ ! -d $DIR_DEST ]; then
+   if [ -d $DIR ] && [ ! -e $DIR_DEST ]; then
       ln -s $DIR $DIR_DEST
-   done
+   fi
 
+EOH
+end
+
+cookbook_file "/tmp/crontab" do
+    owner USER
+    group USER
+    mode 0755
+    source "tremol/crontab"
+end
+
+bash "setup crontab"   do
+      user USER
+      cwd HOME
+
+      code <<-EOH
+   crontab /tmp/crontab
 EOH
 
 end
