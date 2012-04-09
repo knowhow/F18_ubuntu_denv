@@ -21,11 +21,11 @@ GCODE_URL_FMK="http://knowhow-erp-fmk.googlecode.com/files"
 
 if tremol_ver == "225"
 
-remote_file HOME + "/wine_tremol_225.7z" do
-	  source GCODE_URL_FMK + "/wine_tremol.7z"
+remote_file HOME + "/wine_tremol.7z" do
+	  source GCODE_URL_FMK + "/wine_tremol_225.7z"
 	  mode "0644"
-          #sha256
-          checksum = "23062cd56255cada20db230e4369e26f9134d38b"
+      #sha256
+      checksum = "23062cd56255cada20db230e4369e26f9134d38b"
 end
 
 end

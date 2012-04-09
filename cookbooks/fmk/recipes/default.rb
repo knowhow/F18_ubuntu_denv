@@ -77,7 +77,7 @@ cookbook_file  "/etc/dosemu/dosemu.conf"  do
 end
 
 log "dosemu direktoriji"
-directory USER + "/.dosemu" do
+directory HOME + "/.dosemu" do
   owner USER
   group USER
   mode  "0755"
@@ -249,23 +249,18 @@ bash "ln-s dosemu, wine sa home direktrijima"   do
 
    # preslikaj sve dosemu direktorije u wine
 
-   DIR=$HOME/tops 
-   if [[ ! -d $DIR ]]; then
-      ln -s $DIR $HOME/.wine/drive_c/tops
-      ln -s $DIR $HOME/.dosemu/drive_c/tops
-   fi
-
-   DIR=$HOME/kase 
-   if [[ ! -d $DIR ]]; then
-      ln -s $DIR $HOME/.wine/drive_c/kase
-      ln -s $DIR $HOME/.dosemu/drive_c/kase
-   fi
-
-   DIR=$HOME/sigma 
-   if [[ ! -d $DIR ]]; then
-      ln -s $DIR $HOME/.wine/drive_c/sigma
-      ln -s $DIR $HOME/.dosemu/drive_c/sigma
-   fi
+   for f in tops kase sigma
+   do
+       DIR=$HOME/$f
+       if [[ -d $DIR ]]; then
+         for f2 in .wine .dosemu 
+         do 
+             if [[ ! -h $HOME/$f2/drive_c/$f ]] ; then 
+                 ln -s $DIR $HOME/$f2/drive_c/$f
+             fi
+         done
+       fi
+   done
 
 EOH
 
