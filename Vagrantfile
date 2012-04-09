@@ -109,7 +109,7 @@ Vagrant::Config.run do |config|
       role = "tops"
       user = "vagrant"
       fiscal_type = "tremol"
-      tremol_ver = "225"
+      fiscal_version = "225"
      
       ubuntu_archive_url = "http://archive.bring.out.ba/ubuntu/"
 
@@ -122,14 +122,14 @@ Vagrant::Config.run do |config|
 
       vm_config.vm.provision :chef_solo do |chef|
             chef.cookbooks_path =  "cookbooks"
-            chef.add_recipe "fmk"
-            chef.add_recipe "F18_3rd"
-            chef.add_recipe "wine_fiscal::tremol"
             chef.add_recipe "hosts"
+            chef.add_recipe "F18_3rd"
+            chef.add_recipe "fmk"
+            chef.add_recipe "fiscal_wine::tremol"
             chef.json.merge!({ 
                     :F18_3rd => { :user => user, :install_harbour => false }, 
                     :fmk     => { :user => user, :role => role, :ubuntu_archive_url => ubuntu_archive_url,  :build_fmk => build_fmk }, 
-                    :wine_fiscal  => { :user => user, :type => "tremol", :tremol_ver => tremol_ver}, 
+                    :fiscal_wine  => { :user => user, :type => fiscal_type, :version => fiscal_version}, 
                     :hosts =>  { :hostname => host_name, :ip_addr => ip_addr }
             })
       end

@@ -1,29 +1,12 @@
-tremol_user = node[:wine_fiscal][:user]
-tremol_ver  = node[:wine_fiscal][:tremol_ver]
+tremol_user = node[:fiscal_wine][:user]
+tremol_ver  = node[:fiscal_wine][:version]
+
+knowhowERP_root = "/opt/knowhowERP"
 
 USER=tremol_user
 HOME= "/home/" + tremol_user
 
 GCODE_URL_FMK="http://knowhow-erp-fmk.googlecode.com/files"
-
-user USER do
-   comment "knowhowERP user"
-   uid 1000
-   gid "users"
-   home HOME
-   shell "/bin/bash"
-   password "$1$ueVC4w6g$4uREUclhxAclbcHXcBnLz/"
-end
-
-bash "update user " + USER + "dialout, adm" do
-    user  root
-    group root
-
-code <<-EOH
-usermod -a -G dialout, adm #{USER}
-EOH
-
-end
 
 log "----- fiscal runtime packages ----"
 [ "p7zip-full", "wine", "winetricks"].each do |item|
@@ -62,10 +45,14 @@ EOH
 end
 
 
-cookbook_file  HOME + "/.dosemurc"  do
-	owner USER
-	group USER
-	mode 0755
-	source ".dosemurc"
+["fp_server.sh", "oposmgr.sh", "comtool.sh", "fix_ole_error.sh"].each do |file|
+
+    cookbook_file knowhowERP_root + "/util/" + file    do
+        owner USER
+        group USER
+        mode 0755
+        source "tremol/" + file
+    end
+
 end
 

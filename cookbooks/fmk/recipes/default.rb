@@ -1,5 +1,6 @@
 build_fmk = node[:fmk][:build_fmk]
 fmk_role  = node[:fmk][:role]
+sql_site  = node[:fmk][:sql_site]
 USER      = node[:fmk][:user]
 
 GCODE_URL_FMK = "http://knowhow-erp-fmk.googlecode.com/files"
@@ -110,12 +111,8 @@ bash "extract fmk_drive_c.7z"   do
 	EOH
 end
 
-
-
-
 if (fmk_role == "tops") or (fmk_role == "tops_knjig")
 
-	
 	log "wine direktoriji - root owner"
 
 	directory HOME + "/.wine" do
@@ -211,13 +208,21 @@ if (fmk_role == "tops")
 		source "tops/kum_path/fmk_sql.ini"
 	end
 
-	cookbook_file  HOME + "/tops/kum1/sql/sqlpar.dbf"  do
+	cookbook_file  HOME + "/tops/kum1/sql/sqlpar.template"  do
 		owner USER
 		group USER
 		mode 0644
-		source "tops/kum_path/10_sqlpar.dbf"
+		source "tops/kum_path/sqlpar.temlate"
 	end
 
+
+    bash "set sqlpar.dbf" + sql_site do
+        owner USER
+        cwd HOME + "/tops/kum1/sql"
+        code <<-EOH
+            cat sqlpar.template | sed -e 's/12345678900112345678900212345678900399/#{sql_site}0000000000#{sql_site}9999999999#{sql_site}0000000015#{sql_site}/'  > sqlpar.dbf
+EOH
+    end
 
 	cookbook_file  "/usr/local/bin/run_tops.sh"  do
 		owner USER
