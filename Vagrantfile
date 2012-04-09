@@ -107,6 +107,7 @@ Vagrant::Config.run do |config|
       host_name = "fmk-pos-1.knowhow-erp.local"
       build_fmk = false
       role = "tops"
+      sql_site = "10"
       user = "vagrant"
       fiscal_type = "tremol"
       fiscal_version = "225"
@@ -128,7 +129,7 @@ Vagrant::Config.run do |config|
             chef.add_recipe "fiscal_wine::tremol"
             chef.json.merge!({ 
                     :F18_3rd => { :user => user, :install_harbour => false }, 
-                    :fmk     => { :user => user, :role => role, :ubuntu_archive_url => ubuntu_archive_url,  :build_fmk => build_fmk }, 
+                    :fmk     => { :user => user, :role => role, :ubuntu_archive_url => ubuntu_archive_url,  :build_fmk => build_fmk, :sql_site => sql_site }, 
                     :fiscal_wine  => { :user => user, :type => fiscal_type, :version => fiscal_version}, 
                     :hosts =>  { :hostname => host_name, :ip_addr => ip_addr }
             })

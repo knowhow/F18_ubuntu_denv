@@ -212,12 +212,12 @@ if (fmk_role == "tops")
 		owner USER
 		group USER
 		mode 0644
-		source "tops/kum_path/sqlpar.temlate"
+		source "tops/kum_path/sqlpar.template"
 	end
 
 
     bash "set sqlpar.dbf" + sql_site do
-        owner USER
+        user USER
         cwd HOME + "/tops/kum1/sql"
         code <<-EOH
             cat sqlpar.template | sed -e 's/12345678900112345678900212345678900399/#{sql_site}0000000000#{sql_site}9999999999#{sql_site}0000000015#{sql_site}/'  > sqlpar.dbf
