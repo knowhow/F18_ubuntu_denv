@@ -5,13 +5,11 @@ USER=f18_user
 HOME="/home/" + f18_user
 GIT_ROOT = HOME + "/github"
 
-
 directory GITROOT do
   owner USER 
   group USER
   mode  "0755"
 end
-
 
 REPOS = "F18_ubuntu_3rd_party_install"
 
@@ -48,7 +46,4 @@ cd $REPOS
 
 EOH
 end
-
-
-
 

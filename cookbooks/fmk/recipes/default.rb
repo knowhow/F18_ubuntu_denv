@@ -131,7 +131,7 @@ if (fmk_role == "tops") or (fmk_role == "tops_knjig")
 	end
 
 
-       ["tops", "tops/kum1", "tops/kum1/sql", "sigma", "sigma/in", "sigma/out" ].each do |item|
+    ["tops", "tops/kum1", "tops/kum1/sql", "sigma", "sigma/in", "sigma/out" ].each do |item|
        directory HOME + "/" + item do
 	  owner USER 
 	  group USER
@@ -194,7 +194,7 @@ end
 
 if (fmk_role == "tops")
 
-        log "fmk.ini exepath - tops i gateway parametri"
+    log "fmk.ini exepath - tops i gateway parametri"
 	cookbook_file  HOME + "/tops/fmk.ini"  do
 		owner USER
 		group USER
