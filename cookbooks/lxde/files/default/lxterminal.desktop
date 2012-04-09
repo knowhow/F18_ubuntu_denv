@@ -1,10 +1,7 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=LXTerminal
-Name[en_GB]=LXTerminal
 GenericName=Terminal
-GenericName[zh_CN]=终端
-GenericName[zh_TW]=終端機
 Comment=Use the command line
 TryExec=lxterminal
 Exec=lxterminal

@@ -35,5 +35,7 @@ package "xscreensaver" do
 end
 
 cookbook_file HOME + '/Desktop/lxterminal.desktop' do
+    owner USER
+    group USER
     source 'lxterminal.desktop'
 end

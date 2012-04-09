@@ -129,7 +129,7 @@ Vagrant::Config.run do |config|
             chef.add_recipe "fmk"
             chef.add_recipe "fiscal_wine::tremol"
             chef.json.merge!({ 
-                    :lxde => { :user => user}, 
+                    :lxde => { :user => user, :ubuntu_archive_url => ubuntu_archive_url}, 
                     :F18_3rd => { :user => user, :install_harbour => false }, 
                     :fmk     => { :user => user, :role => role, :ubuntu_archive_url => ubuntu_archive_url,  :build_fmk => build_fmk, :sql_site => sql_site }, 
                     :fiscal_wine  => { :user => user, :type => fiscal_type, :version => fiscal_version}, 
