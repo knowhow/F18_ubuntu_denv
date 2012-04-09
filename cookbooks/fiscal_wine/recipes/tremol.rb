@@ -103,13 +103,26 @@ cookbook_file  HOME + "/.config/autostart/fp_server.desktop" do
 	group USER
 	mode 0755
 	source "fp_server.desktop"
-	notifies :run, "execute[logout]"
+	#notifies :run, "execute[logout]"
 end
 
-
-execute "logout" do
-	  user  "vagrant"
-	  command "export DISPLAY=:0 ; lxsession-logout"
-	  action :nothing
+cookbook_file  HOME + "/.config/autostart/run_gateway.desktop" do
+	owner USER
+	group USER
+	mode 0755
+	source "run_gateway.desktop"
 end
+
+cookbook_file  HOME + "/.config/autostart/run_tops.desktop" do
+	owner USER
+	group USER
+	mode 0755
+	source "run_tops.desktop"
+end
+
+#execute "logout" do
+#	  user  "vagrant"
+#	  command "export DISPLAY=:0 ; lxsession-logout"
+#	  action :nothing
+#end
 

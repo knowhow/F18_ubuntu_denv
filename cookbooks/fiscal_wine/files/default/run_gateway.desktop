@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Exec=run_gateway.sh
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name[bs_BA]=gateway
+Name=gateway
+Comment[bs_BA]=
+Comment=
