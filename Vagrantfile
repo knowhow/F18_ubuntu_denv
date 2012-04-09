@@ -108,6 +108,7 @@ Vagrant::Config.run do |config|
       build_fmk = false
       role = "tops"
       user = "vagrant"
+      tremol_ver = "225"
 
       ubuntu_archive_url = "http://archive.bring.out.ba/ubuntu/"
 
@@ -126,7 +127,7 @@ Vagrant::Config.run do |config|
             chef.add_recipe "hosts"
             chef.json.merge!({ 
                     :F18_3rd => { :install_harbour => false }, 
-                    :fmk => { :user => user, :role => role, :ubuntu_archive_url => ubuntu_archive_url,  :build_fmk => build_fmk }, 
+                    :fmk => { :tremol_ver => tremol_ver, :user => user, :role => role, :ubuntu_archive_url => ubuntu_archive_url,  :build_fmk => build_fmk }, 
                     :hosts =>  { :hostname => host_name, :ip_addr => ip_addr }
             })
       end

@@ -142,7 +142,7 @@ end
 remote_file HOME + "/c_tops.7z" do
        source GCODE_URL_FMK + "/c_tops_with_oid.7z"
        mode "0644"
-       checksum  "3d52b9c43ac4953ad3ce0fbf3f85d6e8bb672bb2ecab05210def3cb3756835d3"
+       checksum  "c6996bb702fb4635ac9030fc789f93968c0d9127"
 end
 
 bash "extract c_tops.7z"   do

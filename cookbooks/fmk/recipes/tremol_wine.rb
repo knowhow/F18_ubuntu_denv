@@ -1,6 +1,9 @@
+tremol_ver = node[:fmk][:tremol_ver]
+
 USER="vagrant"
 HOME="/home/vagrant"
 GCODE_URL_FMK="http://knowhow-erp-fmk.googlecode.com/files"
+
 
 #bash "install mono" do
 #    user "root"
@@ -16,11 +19,15 @@ GCODE_URL_FMK="http://knowhow-erp-fmk.googlecode.com/files"
 #EOH
 #end
 
-remote_file HOME + "/wine_tremol.7z" do
+if tremol_ver == "225"
+
+remote_file HOME + "/wine_tremol_225.7z" do
 	  source GCODE_URL_FMK + "/wine_tremol.7z"
 	  mode "0644"
           #sha256
-          checksum "2231323b4c455639aad6240a1140e32565e1d0bfc6ce46de3ac2c354d8ca78b1"
+          checksum = "23062cd56255cada20db230e4369e26f9134d38b"
+end
+
 end
 
 
