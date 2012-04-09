@@ -56,3 +56,22 @@ end
 
 end
 
+
+bash "ln-s fiscal tremol - tops"   do
+      user "root"
+      cwd HOME
+      code <<-EOH
+
+   export HOME=#{HOME}
+
+   DIR=$HOME/.wine_tremol/fiscal
+   DIR_DEST=$HOME/tops/fiscal
+
+   if [ -d $DIR ] && [ ! -d $DIR_DEST ]; then
+      ln -s $DIR $DIR_DEST
+   done
+
+EOH
+
+end
+
