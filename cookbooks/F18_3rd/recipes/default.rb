@@ -1,12 +1,14 @@
+f18_user = node[:F18_3rd][:user]
 install_harbour = node[:F18_3rd][:install_harbour]
 
-HOME="/home/vagrant"
+USER=f18_user
+HOME="/home/" + f18_user
 GIT_ROOT = HOME + "/github"
 
 
-directory "/home/vagrant/github" do
-  owner "vagrant" 
-  group "vagrant"
+directory GITROOT do
+  owner USER 
+  group USER
   mode  "0755"
 end
 
@@ -14,8 +16,8 @@ end
 REPOS = "F18_ubuntu_3rd_party_install"
 
 git GIT_ROOT + "/" + REPOS do
-      user "vagrant"
-      group "vagrant"
+      user USER
+      group USER
       repository "git://github.com/knowhow/" + REPOS
       reference "master"
       action :sync
@@ -31,9 +33,9 @@ if install_harbour
 end
 
 bash "install F18 3rd party" do
-      user "vagrant"
-      group "vagrant"
-      cwd "/home/vagrant/github"
+      user USER
+      group USER
+      cwd GIT_ROOT
       code <<-EOH
 
 export HOME=/home/vagrant
@@ -46,7 +48,6 @@ cd $REPOS
 
 EOH
 end
-
 
 
 
