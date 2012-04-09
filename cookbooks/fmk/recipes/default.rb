@@ -1,11 +1,10 @@
 build_fmk = node[:fmk][:build_fmk]
-fmk_role = node[:fmk][:role]
+fmk_role  = node[:fmk][:role]
+USER      = node[:fmk][:user]
 
+GCODE_URL_FMK = "http://knowhow-erp-fmk.googlecode.com/files"
 
-GCODE_URL_FMK="http://knowhow-erp-fmk.googlecode.com/files"
-
-USER="vagrant"
-HOME="/home/"+USER
+HOME = "/home/" + USER
 GIT_ROOT = HOME + "/github"
 
 
@@ -48,16 +47,16 @@ service "cups" do
    action :stop
 end
 
-directory "/home/vagrant/github" do
-  owner "vagrant" 
-  group "vagrant"
+directory HOME + "/github" do
+  owner USER
+  group USER
   mode  "0755"
 end
 
 
 cookbook_file  HOME + "/.dosemurc"  do
-	owner "vagrant"
-	group "vagrant"
+	owner USER
+	group USER
 	mode 0755
 	source ".dosemurc"
 end
@@ -77,18 +76,16 @@ cookbook_file  "/etc/dosemu/dosemu.conf"  do
 	source "dosemu.conf"
 end
 
-
-
 log "dosemu direktoriji"
-directory "/home/vagrant/.dosemu" do
-  owner "vagrant" 
-  group "vagrant"
+directory USER + "/.dosemu" do
+  owner USER
+  group USER
   mode  "0755"
 end
 
 directory HOME + "/.dosemu/drive_c" do
-  owner "vagrant" 
-  group "vagrant"
+  owner USER 
+  group USER
   mode  "0755"
 end
 
@@ -298,8 +295,6 @@ end
 
 
 
-
-
 log "ako ne možete pristupiti samba file serveru zvijer-2.bring.out.ba, onda trebate ručno instalirati"
 log "fmk_dsemu_drive_c.7z"
 log "detalji na ticketu http://redmine.bring.out.ba/issues/27228"
@@ -312,7 +307,7 @@ log "ako se nalazite u officesa bring.out onda će ovaj posao vagrant/chef uradi
 
 if build_fmk
 bash "instaliraj sa zvijer-2 bringout/fmk "   do
-      user "vagrant"
+      user USER
       cwd HOME
       code <<-EOH
 
@@ -343,15 +338,15 @@ end
 
 if build_fmk
 
-GIT_ROOT="/home/vagrant/github"
+GIT_ROOT=HOME+"/github"
 GIT_URL_ROOT="git://github.com/bringout-fmk"
     
     
 [ "fmk_lib", "fmk_common", "fin", "kalk", "fakt", "pos", "os", "ld", "virm", "kam"].each do |item| 
     
 git GIT_ROOT + "/" + item do
-      user "vagrant"
-      group "vagrant"
+      user USER
+      group USER
 
       repository GIT_URL_ROOT + "/" + item + ".git"
       reference "master"
@@ -361,15 +356,15 @@ end
 end
 
 
-directory "/home/vagrant/github/fmk_lib/lib" do
-  owner "vagrant" 
-  group "vagrant"
+directory HOME + "/github/fmk_lib/lib" do
+  owner USER 
+  group USER
   mode  "0755"
 end
 
-directory "/home/vagrant/github/fmk_lib/exe" do
-  owner "vagrant" 
-  group "vagrant"
+directory HOME + "/github/fmk_lib/exe" do
+  owner USER 
+  group USER
   mode  "0755"
 end
 
@@ -377,7 +372,7 @@ end
 log "kreiraj potrebne direktorije, ln -s itd ..."
 
 bash "ln github => c:/git, mkdir fmk_lib/lib, exe "   do
-      user "vagrant"
+      user USER
       cwd HOME
       code <<-EOH
 
@@ -403,7 +398,7 @@ end
 [ "fmk_lib", "fmk_c", "fin", "kalk", "fakt", "pos", "ld" ].each do |item| 
     
 	bash "build fmk: " + item   do
-	      user "vagrant"
+	      user USER
 	      cwd GIT_ROOT + "/" + item
 	      code <<-EOH
 
@@ -435,7 +430,5 @@ cookbook_file  HOME + "/.dosemu/drive_c/config.sys"  do
 	mode 0755
 	source "config.sys"
 end
-
-
 
 

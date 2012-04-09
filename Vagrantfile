@@ -12,7 +12,8 @@ Vagrant::Config.run do |config|
       build_harbour = true
       build_f18 = true
       build_xtuple = false
- 
+      user = "vagrant"
+
       ubuntu_archive_url = "http://archive.bring.out.ba/ubuntu/"
 
       vm_config.vm.customize ["modifyvm", :id, "--memory",  1024]
@@ -44,6 +45,7 @@ Vagrant::Config.run do |config|
       build_harbour = false
       build_f18 = false
       variant = "lxde"
+      user = "vagrant"
 
       ubuntu_archive_url = "http://archive.bring.out.ba/ubuntu/"
 
@@ -75,6 +77,7 @@ Vagrant::Config.run do |config|
       host_name = "fmk-dev-1.knowhow-erp.local"
       build_fmk = true
       role = "fmk"
+      user = "vagrant"
     
       ubuntu_archive_url = "http://archive.bring.out.ba/ubuntu/"
 
@@ -91,7 +94,7 @@ Vagrant::Config.run do |config|
             chef.add_recipe "hosts"
             chef.json.merge!({ 
                     :F18_3rd => { :install_harbour => false }, 
-                    :fmk => { :role => role, :ubuntu_archive_url => ubuntu_archive_url,  :build_fmk => build_fmk }, 
+                    :fmk => { :user => user,  :role => role, :ubuntu_archive_url => ubuntu_archive_url,  :build_fmk => build_fmk }, 
                     :hosts =>  { :hostname => host_name, :ip_addr => ip_addr }
             })
       end
@@ -104,6 +107,7 @@ Vagrant::Config.run do |config|
       host_name = "fmk-pos-1.knowhow-erp.local"
       build_fmk = false
       role = "tops"
+      user = "vagrant"
 
       ubuntu_archive_url = "http://archive.bring.out.ba/ubuntu/"
 
@@ -122,7 +126,7 @@ Vagrant::Config.run do |config|
             chef.add_recipe "hosts"
             chef.json.merge!({ 
                     :F18_3rd => { :install_harbour => false }, 
-                    :fmk => { :role => role, :ubuntu_archive_url => ubuntu_archive_url,  :build_fmk => build_fmk }, 
+                    :fmk => { :user => user, :role => role, :ubuntu_archive_url => ubuntu_archive_url,  :build_fmk => build_fmk }, 
                     :hosts =>  { :hostname => host_name, :ip_addr => ip_addr }
             })
       end
@@ -136,6 +140,7 @@ Vagrant::Config.run do |config|
       host_name = "fmk-pos-2.knowhow-erp.local"
       build_fmk = false
       role = "tops"
+      user = "vagrant"
 
       ubuntu_archive_url = "http://archive.bring.out.ba/ubuntu/"
 
@@ -153,7 +158,7 @@ Vagrant::Config.run do |config|
             chef.add_recipe "hosts"
             chef.json.merge!({ 
                     :F18_3rd => { :install_harbour => false }, 
-                    :fmk => { :role => role, :ubuntu_archive_url => ubuntu_archive_url,  :build_fmk => build_fmk }, 
+                    :fmk => { :user => user, :role => role, :ubuntu_archive_url => ubuntu_archive_url,  :build_fmk => build_fmk }, 
                     :hosts =>  { :hostname => host_name, :ip_addr => ip_addr }
             })
       end
@@ -167,6 +172,7 @@ Vagrant::Config.run do |config|
       host_name = "fmk-pos-knjig.knowhow-erp.local"
       build_fmk = false
       role = "tops_knjig"
+      user = "vagrant"
 
       ubuntu_archive_url = "http://archive.bring.out.ba/ubuntu/"
 
@@ -184,7 +190,7 @@ Vagrant::Config.run do |config|
             chef.add_recipe "hosts"
             chef.json.merge!({ 
                     :F18_3rd => { :install_harbour => false }, 
-                    :fmk => { :role => role, :ubuntu_archive_url => ubuntu_archive_url,  :build_fmk => build_fmk }, 
+                    :fmk => { :user => user, :role => role, :ubuntu_archive_url => ubuntu_archive_url,  :build_fmk => build_fmk }, 
                     :hosts =>  { :hostname => host_name, :ip_addr => ip_addr }
             })
       end
