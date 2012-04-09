@@ -1,4 +1,11 @@
+#!/bin/bash
+
 CUR_DIR=`pwd`
+
+USER=`whoami`
+DISPLAY=:0
+export PATH=/opt/knowhowERP/util:/usr/bin:/bin:/usr/sbin:/sbin
+
 
 DIALOUT=`groups $USER | grep -c dialout`
 

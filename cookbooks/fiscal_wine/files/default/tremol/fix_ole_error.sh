@@ -1,5 +1,9 @@
 #!/bin/bash
 
+USER=`whoami`
+DISPLAY=:0
+export PATH=/opt/knowhowERP/util:/usr/bin:/bin:/usr/sbin:/sbin
+
 if [[ "$WINEPREFIX" == "" ]];then
    export WINEPREFIX=~/.wine_tremol
 fi

@@ -1,5 +1,10 @@
 CUR_DIR=`pwd`
 
+USER=`whoami`
+DISPLAY=:0
+export PATH=/opt/knowhowERP/util:/usr/bin:/bin:/usr/sbin:/sbin
+
+
 export WINEDEBUG="-all,-shell,-thread,+ole"
 
 for f in 1 2 3 4 5 6 7 8 9
