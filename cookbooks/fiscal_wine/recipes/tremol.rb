@@ -90,3 +90,26 @@ EOH
 
 end
 
+
+directory HOME + "/.config/autostart" do
+	  owner USER 
+	  group USER
+	  mode  "0755"
+end
+
+
+cookbook_file  HOME + "/.config/autostart/fp_server.desktop" do
+	owner USER
+	group USER
+	mode 0755
+	source "fp_server.desktop"
+	notifies :run, "execute[logout]"
+end
+
+
+execute "logout" do
+	  user  "vagrant"
+	  command "export DISPLAY=:0 ; lxsession-logout"
+	  action :nothing
+end
+

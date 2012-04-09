@@ -1,3 +1,5 @@
+#!/bin/bash
+
 CUR_DIR=`pwd`
 
 USER=`whoami`

@@ -107,14 +107,14 @@ Vagrant::Config.run do |config|
       host_name = "fmk-pos-1.knowhow-erp.local"
       build_fmk = false
       role = "tops"
-      sql_site = "10"
+      sql_site = "50"
       user = "vagrant"
       fiscal_type = "tremol"
       fiscal_version = "225"
      
       ubuntu_archive_url = "http://archive.bring.out.ba/ubuntu/"
 
-      vm_config.vm.customize ["modifyvm", :id, "--memory",  512]
+      vm_config.vm.customize ["modifyvm", :id, "--memory",  256]
       vm_config.vm.customize ["modifyvm", :id, "--name",  host_name]
 
       vm_config.vm.box = "precise-desktop-lxde"
