@@ -1,4 +1,4 @@
-f18_user = node[:F18_3rd][:user]
+f18_user = node[:ubuntu][:user]
 install_harbour = node[:F18_3rd][:install_harbour]
 
 USER=f18_user
@@ -54,7 +54,7 @@ bash "install F18 3rd party" do
       cwd GIT_ROOT
       code <<-EOH
 
-export HOME=/home/vagrant
+export HOME=#{HOME}
 
 REPOS=F18_ubuntu_3rd_party_install
 

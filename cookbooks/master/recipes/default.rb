@@ -1,10 +1,12 @@
 variant = node[:master][:variant]
 
+USER = node[:ubuntu][:user]
+
 build_harbour = node[:master][:build_harbour]
 build_f18 = node[:master][:build_f18]
 build_xtuple = node[:master][:build_xtuple]
 
-HOME="/home/vagrant"
+HOME="/home/" + USER
 GIT_ROOT = HOME + "/github"
 
 
@@ -99,33 +101,33 @@ end
 
 knowhowERP_root = "/opt/knowhowERP"
 directory knowhowERP_root do
-  owner "vagrant" 
-  group "vagrant"
+  owner USER 
+  group USER
   mode  "0755"
 end
 
 directory knowhowERP_root + "/bin" do
-  owner "vagrant" 
-  group "vagrant"
+  owner USER 
+  group USER
   mode  "0755"
 end
 
 directory knowhowERP_root + "/util" do
-  owner "vagrant" 
-  group "vagrant"
+  owner USER 
+  group USER
   mode  "0755"
 end
 
-directory "/home/vagrant/github" do
-  owner "vagrant" 
-  group "vagrant"
+directory HOME + "/github" do
+  owner USER 
+  group USER
   mode  "0755"
 end
 
 
 git GIT_ROOT + "/harbour" do
-      user "vagrant"
-      group "vagrant"
+      user USER
+      group USER
 
       repository "git://github.com/hernad/harbour.git"
       reference "master"
@@ -136,7 +138,7 @@ end
 if build_harbour
 
 bash "build harbour compiler, librarires" do
-      user "vagrant"
+      user USER
       cwd GIT_ROOT + "/harbour"
       code <<-EOH
 
@@ -151,29 +153,26 @@ end
 end
 
 git GIT_ROOT + "/F18_knowhow" do
-      user "vagrant"
-      group "vagrant"
+      user USER
+      group USER
 
       repository "git://github.com/knowhow/F18_knowhow.git"
       reference "master"
       action :sync
 end
 
-HOME="/home/vagrant"
-
-
 if variant == "unity"
 
 	directory HOME + "/.config/autostart" do
-	  owner "vagrant" 
-	  group "vagrant"
+	  owner USER 
+	  group USER
 	  mode  "0755"
 	end
 
 
 	cookbook_file  HOME + "/.config/autostart/gnome-terminal.desktop" do
-	      owner "vagrant"
-	      group "vagrant"
+	      owner USER
+	      group USER
 	      mode 0755
 	      source "gnome-terminal.desktop"
 	      notifies :run, "execute[gnome_logout]"
@@ -181,7 +180,7 @@ if variant == "unity"
 
 
 	execute "gnome_logout" do
-	  user  "vagrant"
+	  user  USER
 	  command "export DISPLAY=:0 ; gnome-session-quit --force --logout"
 	  action :nothing
 	end
@@ -192,9 +191,9 @@ end
 if build_f18
 
 bash "build " do
-      user "vagrant"
-      group "vagrant"
-      cwd "/home/vagrant/github"
+      user USER
+      group USER
+      cwd HOME + "/github"
 
       code <<-EOH
 REPOS=F18_knowhow
@@ -209,15 +208,15 @@ end
 
 end
 
-directory "/home/vagrant/.wine" do
-  owner "vagrant" 
-  group "vagrant"
+directory HOME + "/.wine" do
+  owner USER 
+  group USER
   mode  "0755"
 end
 
-directory "/home/vagrant/.wine/drive_c" do
-  owner "vagrant" 
-  group "vagrant"
+directory HOME + "/.wine/drive_c" do
+  owner USER 
+  group USER
   mode  "0755"
 end
 
@@ -228,8 +227,8 @@ log "GIT clone xtuple repositories -------"
 
 REPOS = "openrpt"
 git GIT_ROOT + "/" + REPOS do
-      user "vagrant"
-      group "vagrant"
+      user USER
+      group USER
       repository "git://github.com/knowhow/" + REPOS
       reference "master"
       action :sync
@@ -238,8 +237,8 @@ end
 
 REPOS = "csvimp"
 git GIT_ROOT + "/" + REPOS do
-      user "vagrant"
-      group "vagrant"
+      user USER
+      group USER
       repository "git://github.com/knowhow/" + REPOS
       reference "master"
       action :sync
@@ -248,8 +247,8 @@ end
 
 REPOS = "xtuple"
 git GIT_ROOT + "/" + REPOS do
-      user "vagrant"
-      group "vagrant"
+      user USER
+      group USER
       repository "git://github.com/knowhow/" + REPOS
       reference "knowhow"
       action :sync
@@ -258,8 +257,8 @@ end
 
 REPOS = "updater"
 git GIT_ROOT + "/" + REPOS do
-      user "vagrant"
-      group "vagrant"
+      user USER
+      group USER
       repository "git://github.com/knowhow/" + REPOS
       reference "master"
       action :sync
@@ -271,12 +270,12 @@ log "build xtuple library-ja i paketa .... mozete komotno pristaviti kahvu ..."
 ["openrpt", "csvimp", "xtuple", "updater"].each do |item|
 
 bash "build & install xtuple " + item do
-      user "vagrant"
-      group "vagrant"
-      cwd "/home/vagrant/github"
+      user  USER
+      group USER
+      cwd HOME + "/github"
       code <<-EOH
 
-export HOME=/home/vagrant
+export HOME=#{HOME}
 
 REPOS=#{item}
 cd $REPOS
