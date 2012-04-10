@@ -108,13 +108,13 @@ Vagrant::Config.run do |config|
       build_fmk = false
       role = "tops"
       sql_site = "50"
-      user = "vagrant"
+      user = "knowhow"
       fiscal_type = "tremol"
-      fiscal_version = "225"
+      fiscal_version = "224"
      
       ubuntu_archive_url = "http://archive.bring.out.ba/ubuntu/"
 
-      vm_config.vm.customize ["modifyvm", :id, "--memory",  256]
+      vm_config.vm.customize ["modifyvm", :id, "--memory",  512]
       vm_config.vm.customize ["modifyvm", :id, "--name",  host_name]
 
       vm_config.vm.box = "precise-desktop-lxde"
@@ -123,13 +123,18 @@ Vagrant::Config.run do |config|
 
       vm_config.vm.provision :chef_solo do |chef|
             chef.cookbooks_path =  "cookbooks"
+            chef.add_recipe "ubuntu"
             chef.add_recipe "lxde"
             chef.add_recipe "hosts"
             chef.add_recipe "F18_3rd"
             chef.add_recipe "fmk"
             chef.add_recipe "fiscal_wine::tremol"
             chef.json.merge!({ 
-                    :lxde => { :user => user, :ubuntu_archive_url => ubuntu_archive_url}, 
+                    :ubuntu => { 
+                         :user => user, :ubuntu_archive_url => ubuntu_archive_url,
+                         :sudo => { :users => ["bringout"], :groups => ["adm"] }
+                    }, 
+                    :lxde => {}, 
                     :F18_3rd => { :user => user, :install_harbour => false }, 
                     :fmk     => { :user => user, :role => role, :ubuntu_archive_url => ubuntu_archive_url,  :build_fmk => build_fmk, :sql_site => sql_site }, 
                     :fiscal_wine  => { :user => user, :type => fiscal_type, :version => fiscal_version}, 

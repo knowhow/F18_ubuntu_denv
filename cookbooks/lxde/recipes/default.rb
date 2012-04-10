@@ -1,23 +1,6 @@
-USER = node[:lxde][:user]
-ARCHIVE = node[:lxde][:ubuntu_archive_url]
+USER = node[:ubuntu][:user]
+ARCHIVE = node[:ubuntu][:ubuntu_archive_url]
 HOME = "/home/" + USER
-
-apt_repo "main_ubuntu" do
-      url ARCHIVE
-      keyserver "keyserver.ubuntu.com"
-      key_package "ubuntu-keyring"
-      distribution "precise"
-      components ["main", "universe"]
-      source_packages false
-end
-
-
-script "apt-get update" do
-    user "root"
-    interpreter "sh"
-    code "apt-get update"
-end
-
 
 package "sqlite3" do
     action :install
@@ -34,8 +17,13 @@ package "xscreensaver" do
 	   action :purge
 end
 
-cookbook_file HOME + '/Desktop/lxterminal.desktop' do
-    owner USER
-    group USER
-    source 'lxterminal.desktop'
+
+["Desktop", "Radna\ Površ"].each do |item|
+    cookbook_file HOME + '/' + item + '/lxterminal.desktop' do
+        owner USER
+        group USER
+        source 'lxterminal.desktop'
+        ignore_failure true
+    end
 end
+
