@@ -92,7 +92,7 @@ Vagrant::Config.run do |config|
             chef.cookbooks_path =  "cookbooks"
             chef.add_recipe "fmk"
             chef.add_recipe "hosts"
-            chef.json.merge!({ 
+            chef.json.merge!({  
                     :F18_3rd => { :install_harbour => false }, 
                     :fmk => { :user => user,  :role => role, :ubuntu_archive_url => ubuntu_archive_url,  :build_fmk => build_fmk }, 
                     :hosts =>  { :hostname => host_name, :ip_addr => ip_addr }
@@ -108,7 +108,8 @@ Vagrant::Config.run do |config|
       build_fmk = false
       role = "tops"
       sql_site = "50"
-      user = "knowhow"
+      user     = "bringout"
+      f18_user = "knowhow"
       fiscal_type = "tremol"
       fiscal_version = "224"
      
@@ -134,8 +135,9 @@ Vagrant::Config.run do |config|
                          :user => user, :ubuntu_archive_url => ubuntu_archive_url,
                          :sudo => { :users => ["vagrant", "bringout"], :groups => ["adm"] }
                     }, 
-                    :lxde => {}, 
-                    :F18_3rd => { :user => user, :install_harbour => false }, 
+                    :lxde    => {}, 
+                    :F18     => { :user => f18_user }, 
+                    :F18_3rd => { :install_harbour => false }, 
                     :fmk     => { :user => user, :role => role, :ubuntu_archive_url => ubuntu_archive_url,  :build_fmk => build_fmk, :sql_site => sql_site }, 
                     :fiscal_wine  => { :user => user, :type => fiscal_type, :version => fiscal_version}, 
                     :hosts =>  { :hostname => host_name, :ip_addr => ip_addr }
