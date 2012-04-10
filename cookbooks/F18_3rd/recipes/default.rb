@@ -10,7 +10,7 @@ group USER
 user USER do
    comment "knowhowERP user"
    gid   USER
-   home  "users"
+   home  HOME
    shell "/bin/bash"
    password "$1$ueVC4w6g$4uREUclhxAclbcHXcBnLz/"
    supports( :manage_home => true, :non_unique => false )
