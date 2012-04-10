@@ -132,7 +132,7 @@ Vagrant::Config.run do |config|
             chef.json.merge!({ 
                     :ubuntu => { 
                          :user => user, :ubuntu_archive_url => ubuntu_archive_url,
-                         :sudo => { :users => ["bringout"], :groups => ["adm"] }
+                         :sudo => { :users => ["vagrant", "bringout"], :groups => ["adm"] }
                     }, 
                     :lxde => {}, 
                     :F18_3rd => { :user => user, :install_harbour => false }, 

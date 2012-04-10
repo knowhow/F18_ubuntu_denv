@@ -27,6 +27,16 @@ if tremol_ver == "225"
 
 end
 
+if tremol_ver == "224"
+
+    remote_file HOME + "/wine_tremol.7z" do
+        source GCODE_URL_FMK + "/wine_tremol_224.7z"
+        mode "0644"
+        #sha256
+        checksum "884cb5cee790bdd84b04d926dba9a3af0f1b2afed141d0cd80f01acedade7156" 
+    end
+end
+
 bash "install wine_tremol.7z" do
     user  USER
     group USER
@@ -104,20 +114,6 @@ cookbook_file  HOME + "/.config/autostart/fp_server.desktop" do
 	mode 0755
 	source "fp_server.desktop"
 	#notifies :run, "execute[logout]"
-end
-
-cookbook_file  HOME + "/.config/autostart/run_gateway.desktop" do
-	owner USER
-	group USER
-	mode 0755
-	source "run_gateway.desktop"
-end
-
-cookbook_file  HOME + "/.config/autostart/run_tops.desktop" do
-	owner USER
-	group USER
-	mode 0755
-	source "run_tops.desktop"
 end
 
 #execute "logout" do

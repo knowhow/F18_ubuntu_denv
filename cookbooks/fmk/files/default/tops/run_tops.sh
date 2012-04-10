@@ -7,4 +7,7 @@ then
     sudo killall dosemu.bin
 fi
 
-sudo dosemu -w -E c:\\tops\\ee_dosem.bat &
+#full screen
+#sudo dosemu -w -E c:\\tops\\ee_dosem.bat &
+
+sudo dosemu -E c:\\tops\\ee_dosem.bat &

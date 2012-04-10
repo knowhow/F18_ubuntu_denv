@@ -6,13 +6,8 @@ HOME="/home/" + f18_user
 GIT_ROOT = HOME + "/github"
 REPOS = "F18_ubuntu_3rd_party_install"
 
-gem_package "ruby-shadow" do
-   action :install
-end
-
 user USER do
    comment "knowhowERP user"
-   uid 1000
    gid "users"
    home HOME
    shell "/bin/bash"
@@ -28,7 +23,6 @@ usermod -a -G dialout,adm,sudo #{USER}
 EOH
 
 end
-
 
 directory GIT_ROOT do
   owner USER 

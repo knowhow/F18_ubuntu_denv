@@ -231,6 +231,16 @@ EOH
 		source "tops/run_tops.sh"
 	end
 
+    [".config/autostart", "Desktop", "Radna\ Površ"].each do |item|
+        cookbook_file  HOME + "/"  + item + "/run_gateway_tops.desktop" do
+          owner USER
+          group USER
+          mode 0755
+          source "tops/run_gateway_tops.desktop"
+          ignore_failure true
+        end
+    end
+
 end
 
 
