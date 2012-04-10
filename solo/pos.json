@@ -1,0 +1,34 @@
+{
+
+ "run_list": [ "recipe[hosts::default]", "recipe[F18_3rd::default]", "recipe[fmk::default]", "recipe[fiscal_wine::tremol]"],
+
+ "lxde": {
+    "user":  "knowhow",
+    "ubuntu_archive_url":  "http://archive.bring.out.ba/ubuntu"
+  },
+
+  "F18_3rd": {
+     "user": "knowhow",
+     "ubuntu_archive_url":  "http://archive.bring.out.ba/ubuntu",
+     "install_harbour": false
+  },
+
+  "fmk": {
+    "user": "knowhow",
+    "ubuntu_archive_url":  "http://archive.bring.out.ba/ubuntu",
+    "build_fmk": false,
+    "sql_site": "52"
+  },
+
+  "fiscal_wine": {
+    "user": "knowhow",
+    "type":  "tremol",
+    "version": "225"
+  },
+
+  "hosts": {
+    "hostname": "p-vindija-52.knowhow.erp.local",
+    "ip_addr": "192.168.45.100"
+  }
+
+}
