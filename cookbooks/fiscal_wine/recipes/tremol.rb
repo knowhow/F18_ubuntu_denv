@@ -1,4 +1,4 @@
-tremol_user = node[:fiscal_wine][:user]
+tremol_user = node[:F18][:user]
 tremol_ver  = node[:fiscal_wine][:version]
 
 knowhowERP_root = "/opt/knowhowERP"

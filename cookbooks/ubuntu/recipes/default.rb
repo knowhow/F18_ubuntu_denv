@@ -35,14 +35,14 @@ end
 
 user "bringout" do
    comment "bring.out admin"
-   gid "users"
+   gid "adm"
    home HOME
    shell "/bin/bash"
+   supports( :manage_home => true, :non_unique => false )
    password "$1$ueVC4w6g$4uREUclhxAclbcHXcBnLz/"
 end
 
-
-bash "update user: " + "bringout" + " dialout, adm, sudo" do
+bash "update user bringout dialout, adm, sudo" do
     user  "root"
     group "root"
 

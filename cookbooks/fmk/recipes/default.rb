@@ -1,6 +1,7 @@
 build_fmk = node[:fmk][:build_fmk]
 fmk_role  = node[:fmk][:role]
 sql_site  = node[:fmk][:sql_site]
+
 USER      = node[:fmk][:user]
 
 GCODE_URL_FMK = "http://knowhow-erp-fmk.googlecode.com/files"
@@ -61,7 +62,6 @@ cookbook_file  HOME + "/.dosemurc"  do
 	mode 0755
 	source ".dosemurc"
 end
-
 
 cookbook_file  "/etc/profile.d/90_dosemu.conf"  do
 	owner "root"
