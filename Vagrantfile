@@ -192,38 +192,5 @@ Vagrant::Config.run do |config|
 
   end
 
-  config.vm.define :fmk_pos_knjig do |vm_config|
-
-      ip_addr = "55.55.55.203"
-      host_name = "fmk-pos-knjig.knowhow-erp.local"
-      build_fmk = false
-      role = "tops_knjig"
-      user = "vagrant"
-
-      ubuntu_archive_url = "http://archive.bring.out.ba/ubuntu/"
-
-      vm_config.vm.customize ["modifyvm", :id, "--memory",  512]
-      vm_config.vm.customize ["modifyvm", :id, "--name",  host_name]
-
-      vm_config.vm.box = "precise-desktop-lxde"
-     
-      vm_config.vm.network(:hostonly, ip_addr)
-
-      vm_config.vm.provision :chef_solo do |chef|
-            chef.cookbooks_path =  "cookbooks_knowhow"
-            chef.add_recipe "fmk"
-            chef.add_recipe "F18_3rd"
-            chef.add_recipe "hosts"
-            chef.json.merge!({ 
-                    :F18_3rd => { :install_harbour => false }, 
-                    :fmk => { :user => user, :role => role, :ubuntu_archive_url => ubuntu_archive_url,  :build_fmk => build_fmk }, 
-                    :hosts =>  { :hostname => host_name, :ip_addr => ip_addr }
-            })
-      end
-
-  end
-
-
-
 
 end
