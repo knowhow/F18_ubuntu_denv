@@ -1,0 +1,3 @@
+[submodule "cookbooks_knowhow"]
+	path = cookbooks_knowhow
+	url = git://github.com/knowhow/cookbooks_knowhow.git
