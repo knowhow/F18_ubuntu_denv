@@ -24,7 +24,7 @@ Vagrant::Config.run do |config|
       vm_config.vm.network(:hostonly, ip_addr)
 
       vm_config.vm.provision :chef_solo do |chef|
-            chef.cookbooks_path =  "cookbooks"
+            chef.cookbooks_path =  "cookbooks_knowhow"
             chef.add_recipe "master"
             chef.add_recipe "F18_3rd"
             chef.add_recipe "hosts"
@@ -57,7 +57,7 @@ Vagrant::Config.run do |config|
       vm_config.vm.network(:hostonly, ip_addr)
 
       vm_config.vm.provision :chef_solo do |chef|
-            chef.cookbooks_path =  "cookbooks"
+            chef.cookbooks_path =  "cookbooks_knowhow"
             chef.add_recipe "F18_3rd"
             #chef.add_recipe "master"
             chef.add_recipe "hosts"
@@ -89,7 +89,7 @@ Vagrant::Config.run do |config|
       vm_config.vm.network(:hostonly, ip_addr)
 
       vm_config.vm.provision :chef_solo do |chef|
-            chef.cookbooks_path =  "cookbooks"
+            chef.cookbooks_path =  "cookbooks_knowhow"
             chef.add_recipe "fmk"
             chef.add_recipe "hosts"
             chef.json.merge!({  
@@ -123,7 +123,7 @@ Vagrant::Config.run do |config|
       vm_config.vm.network(:hostonly, ip_addr)
 
       vm_config.vm.provision :chef_solo do |chef|
-            chef.cookbooks_path =  "cookbooks"
+            chef.cookbooks_path =  "cookbooks_knowhow"
             chef.add_recipe "ubuntu"
             chef.add_recipe "lxde"
             chef.add_recipe "hosts"
@@ -170,7 +170,7 @@ Vagrant::Config.run do |config|
 
 
       vm_config.vm.provision :chef_solo do |chef|
-            chef.cookbooks_path =  "cookbooks"
+            chef.cookbooks_path =  "cookbooks_knowhow"
             chef.add_recipe "ubuntu"
             chef.add_recipe "lxde"
             chef.add_recipe "hosts"
@@ -212,7 +212,7 @@ Vagrant::Config.run do |config|
       vm_config.vm.network(:hostonly, ip_addr)
 
       vm_config.vm.provision :chef_solo do |chef|
-            chef.cookbooks_path =  "cookbooks"
+            chef.cookbooks_path =  "cookbooks_knowhow"
             chef.add_recipe "fmk"
             chef.add_recipe "F18_3rd"
             chef.add_recipe "hosts"
