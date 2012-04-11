@@ -101,15 +101,15 @@ Vagrant::Config.run do |config|
 
   end
 
-  config.vm.define :fmk_pos_1 do |vm_config|
+  config.vm.define :fmk_pos_1b do |vm_config|
 
-      ip_addr = "55.55.55.201"
-      host_name = "lu-1.knowhow-erp.local"
+      ip_addr = "55.55.55.211"
+      host_name = "lu-1b.knowhow-erp.local"
       build_fmk = false
       role = "tops"
       sql_site = "10"
-      user     = "bringout"
-      f18_user = "knowhow"
+      admin = "vagrant"
+      user  = "bringout"
       fiscal_type = "tremol"
       fiscal_version = "224"
      
@@ -118,9 +118,9 @@ Vagrant::Config.run do |config|
       vm_config.vm.customize ["modifyvm", :id, "--memory",  512]
       vm_config.vm.customize ["modifyvm", :id, "--name",  host_name]
 
-      vm_config.vm.box = "desktop-precise-lubuntu"
+      vm_config.vm.box = "precise-desktop-lubuntu"
      
-      #vm_config.vm.network(:hostonly, ip_addr)
+      vm_config.vm.network(:hostonly, ip_addr)
 
       vm_config.vm.provision :chef_solo do |chef|
             chef.cookbooks_path =  "cookbooks"
@@ -132,13 +132,13 @@ Vagrant::Config.run do |config|
             #chef.add_recipe "fiscal_wine::tremol"
             chef.json.merge!({ 
                     :ubuntu => { 
-                         :user => user, :ubuntu_archive_url => ubuntu_archive_url,
-                         :sudo => { :users => ["vagrant", "bringout"], :groups => ["adm"] }
+                         :user => user, :admin => admin, :ubuntu_archive_url => ubuntu_archive_url,
+                         :sudo => { :users => ["vagrant"], :groups => ["adm"] }
                     }, 
                     :lxde    => {}, 
-                    :F18     => { :user => f18_user }, 
+                    :F18     => { :user => user }, 
                     :F18_3rd => { :install_harbour => false }, 
-                    :fmk     => { :user => f18_user, :role => role, :ubuntu_archive_url => ubuntu_archive_url,  :build_fmk => build_fmk, :sql_site => sql_site }, 
+                    :fmk     => { :user => user, :role => role, :ubuntu_archive_url => ubuntu_archive_url,  :build_fmk => build_fmk, :sql_site => sql_site }, 
                     :fiscal_wine  => { :user => user, :type => fiscal_type, :version => fiscal_version}, 
                     :hosts =>  { :hostname => host_name, :ip_addr => ip_addr }
             })
@@ -154,8 +154,8 @@ Vagrant::Config.run do |config|
       build_fmk = false
       role = "tops"
       sql_site = "50"
-      user     = "bringout"
-      f18_user = "knowhow"
+      admin     = "admin"
+      user      = "bringout"
       fiscal_type = "tremol"
       fiscal_version = "224"
    
@@ -179,13 +179,13 @@ Vagrant::Config.run do |config|
             chef.add_recipe "fiscal_wine::tremol"
             chef.json.merge!({ 
                     :ubuntu => { 
-                         :user => user, :ubuntu_archive_url => ubuntu_archive_url,
+                         :user => user, :admin => admin, :ubuntu_archive_url => ubuntu_archive_url,
                          :sudo => { :users => ["vagrant", "bringout"], :groups => ["adm"] }
                     }, 
                     :lxde    => {}, 
-                    :F18     => { :user => f18_user }, 
+                    :F18     => { :user => user }, 
                     :F18_3rd => { :install_harbour => false }, 
-                    :fmk     => { :user => f18_user, :role => role, :ubuntu_archive_url => ubuntu_archive_url,  :build_fmk => build_fmk, :sql_site => sql_site }, 
+                    :fmk     => { :user => user, :role => role, :ubuntu_archive_url => ubuntu_archive_url,  :build_fmk => build_fmk, :sql_site => sql_site }, 
                     :fiscal_wine  => { :user => user, :type => fiscal_type, :version => fiscal_version}, 
                     :hosts =>  { :hostname => host_name, :ip_addr => ip_addr }
             })
