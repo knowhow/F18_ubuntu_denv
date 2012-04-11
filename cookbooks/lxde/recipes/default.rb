@@ -27,3 +27,14 @@ end
     end
 end
 
+
+template "/etc/lightdm/lightdm.conf" do
+    source "lightdm.conf.erb"
+    mode 0755
+    owner "root"
+    group "root"
+    variables(
+        :autologin_user => USER
+    )
+end
+
