@@ -52,8 +52,8 @@ if install_harbour
 end
 
 bash "install F18 3rd party" do
-      user USER
-      group USER
+      user "root"
+      group "root"
       cwd GIT_ROOT
       code <<-EOH
 
