@@ -154,20 +154,19 @@ Vagrant::Config.run do |config|
       build_fmk = false
       role = "tops"
       sql_site = "50"
-      admin     = "admin"
-      user      = "bringout"
+      admin = "vagrant"
+      user  = "bringout"
       fiscal_type = "tremol"
       fiscal_version = "224"
-   
+     
       ubuntu_archive_url = "http://archive.bring.out.ba/ubuntu/"
 
       vm_config.vm.customize ["modifyvm", :id, "--memory",  512]
       vm_config.vm.customize ["modifyvm", :id, "--name",  host_name]
 
-      vm_config.vm.box = "precise-desktop-lxde"
+      vm_config.vm.box = "precise-desktop-lubuntu"
      
       vm_config.vm.network(:hostonly, ip_addr)
-
 
       vm_config.vm.provision :chef_solo do |chef|
             chef.cookbooks_path =  "cookbooks_knowhow"
@@ -180,7 +179,7 @@ Vagrant::Config.run do |config|
             chef.json.merge!({ 
                     :ubuntu => { 
                          :user => user, :admin => admin, :ubuntu_archive_url => ubuntu_archive_url,
-                         :sudo => { :users => ["vagrant", "bringout"], :groups => ["adm"] }
+                         :sudo => { :users => ["vagrant"], :groups => ["adm"] }
                     }, 
                     :lxde    => {}, 
                     :F18     => { :user => user }, 
@@ -192,7 +191,6 @@ Vagrant::Config.run do |config|
       end
 
   end
-
 
   config.vm.define :fmk_pos_knjig do |vm_config|
 
