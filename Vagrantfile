@@ -101,10 +101,10 @@ Vagrant::Config.run do |config|
 
   end
 
-  config.vm.define :fmk_pos_1b do |vm_config|
+  config.vm.define :fmk_pos_1 do |vm_config|
 
-      ip_addr = "55.55.55.211"
-      host_name = "lu-1b.knowhow-erp.local"
+      ip_addr = "55.55.55.201"
+      host_name = "fmk-pos-1.knowhow-erp.local"
       build_fmk = false
       role = "tops"
       sql_site = "10"
@@ -127,9 +127,9 @@ Vagrant::Config.run do |config|
             chef.add_recipe "ubuntu"
             chef.add_recipe "lxde"
             chef.add_recipe "hosts"
-            #chef.add_recipe "F18_3rd"
-            #chef.add_recipe "fmk"
-            #chef.add_recipe "fiscal_wine::tremol"
+            chef.add_recipe "F18_3rd"
+            chef.add_recipe "fmk"
+            chef.add_recipe "fiscal_wine::tremol"
             chef.json.merge!({ 
                     :ubuntu => { 
                          :user => user, :admin => admin, :ubuntu_archive_url => ubuntu_archive_url,
